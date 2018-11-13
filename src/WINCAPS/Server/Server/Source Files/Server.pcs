@@ -1,4 +1,6 @@
-'!TITLE "Denso robot program"
+'!TITLE "Server.pcs"
+' AUTHOR : 		Jacob Taylor Cassady
+' DESCRIPTION : TCP Server.
 
 Sub Main										' START MAIN
 	Comm.Open 4									' Open port number 4 (TCP Server)

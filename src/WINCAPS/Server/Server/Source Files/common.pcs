@@ -1,4 +1,6 @@
-'!TITLE "Denso robot program"
+'!TITLE "common.pcs"
+' AUTHOR : 		Jacob Taylor Cassady
+' DESCRIPTION : Main program.  Creates a task for a variety of pacscript processes.
 
 #include "Server.pcs"
 

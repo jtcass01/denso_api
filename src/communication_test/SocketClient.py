@@ -26,6 +26,17 @@ class SocketClient(object):
     def send_message(self, message):
         self.sock.send(message.encode())
 
+    def communication_loop(self):
+        message = ""
+
+        while(message != "QUIT"):
+            message = input('What would you like to send to the server?')
+            self.send_message(message = message)
+
+            for response in range(3):
+                print(self.sock.recv(self.buffer_size))
+
+
     def prompt_for_message(self):
         message = input('What would you like to send to the server?')
         self.send_message(message = message)
@@ -42,6 +53,7 @@ class SocketClient(object):
         print("==== MENU ====")
         print("1) send a message")
         print("2) loop listen")
+        print("2) communication loop")
         print("0) end connection")
 
         response = int(input("What would you like to do?"))
@@ -50,10 +62,14 @@ class SocketClient(object):
             self.prompt_for_message()
         elif(response == 2):
             self.prompt_for_loop_listen()
+        elif(response == 3):
+            self.communication_loop()
         elif(response == 0):
             self.end_connection()
         else:
             print("Invalid menu selection.  Please try again...")
+
+        return response
 
 
 if __name__ == "__main__":
@@ -64,5 +80,7 @@ if __name__ == "__main__":
 
     test_client.connect(ip_address=ip_address, port=port)
 
-    while(True):
-        test_client.menu()
+    response = 1
+
+    while(response != 0):
+        response = test_client.menu()

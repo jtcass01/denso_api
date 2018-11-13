@@ -1,0 +1,26 @@
+'!TITLE "Denso robot program"
+
+Sub Main
+	Comm.Open 4
+	Comm.Clear 4
+	Wait Comm.State(4) = 2 ' Wait for connection from the client.
+	On Error Goto ErrHandler
+	I1 = 0
+	Do
+		S1 = Comm.Input(4)
+		PrintDbg S1
+		Comm.Output 4, "OK " & Now
+		Delay 1
+	Loop Until I1<>0
+	Comm.Close 4
+	Exit Sub
+
+ErrHandler:
+	Comm.Close 4, -1 'Compulsory disconnect
+	PrintDbg "Err = " & Hex(Err.OriginalNumber)
+	Comm.Open 4
+	Comm.Close 4
+	Wait Comm.State(4) = 2 'Wait for connection from the client
+	Resume 'Clear the error-state, and resume the program from the line where an error occured
+	
+End Sub

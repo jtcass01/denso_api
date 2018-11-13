@@ -1,0 +1,9 @@
+'!TITLE "Denso robot program"
+
+#include "Server.pcs"
+
+Sub Main
+	' Start the TCP Server.
+	RunByName "Server"
+	
+End Sub

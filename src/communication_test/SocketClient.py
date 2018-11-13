@@ -20,7 +20,7 @@ class SocketClient(object):
 
 
     def loop_listen(self, expected_message_count = 10):
-        for message in range(expected_message_count):
+        while(1):
             print(self.sock.recv(self.buffer_size))
 
     def send_message(self, message):

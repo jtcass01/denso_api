@@ -1,10 +1,10 @@
 '!TITLE "Denso robot program"
 
-Sub Main
-	Comm.Open 4
-	Comm.Clear 4
-	Wait Comm.State(4) = 2 ' Wait for connection from the client.
-	On Error Goto ErrHandler
+Sub Main										' START MAIN
+	Comm.Open 4									' Open port number 4 (TCP Server)
+	Comm.Clear 4								' Clear port number 4
+	Wait Comm.State(4) = 2 						' Wait for connection from the client.
+	On Error Goto ErrorHandler					' Create disconnect error handler
 	I1 = 0
 	Do
 		S1 = Comm.Input(4)
@@ -12,15 +12,15 @@ Sub Main
 		Comm.Output 4, "OK " & Now
 		Delay 1
 	Loop Until I1<>0
-	Comm.Close 4
-	Exit Sub
 
-ErrHandler:
-	Comm.Close 4, -1 'Compulsory disconnect
-	PrintDbg "Err = " & Hex(Err.OriginalNumber)
-	Comm.Open 4
-	Comm.Close 4
-	Wait Comm.State(4) = 2 'Wait for connection from the client
-	Resume 'Clear the error-state, and resume the program from the line where an error occured
-	
-End Sub
+	Comm.Close 4								' Close port 4
+	Exit Sub									' END MAIN
+
+ErrorHandler:									' BEGIN ERRORHANDLER
+	Comm.Close 4, -1 							' Error occured disconnect from port 4
+	PrintDbg "Err = " & Hex(Err.OriginalNumber)	' Print error number using hex representation.
+	Comm.Open 4									' Open port 4
+	Comm.Clear 4								' Clear port 4
+	Wait Comm.State(4) = 2 						' Wait for connection from the client
+	Resume 										' Clear the error-state, and resume the program from the line where an error occured	
+End Sub 										' END ERRORHANDLER

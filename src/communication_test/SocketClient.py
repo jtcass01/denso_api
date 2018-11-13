@@ -43,7 +43,7 @@ class SocketClient(object):
 
     def prompt_for_loop_listen(self):
         expected_message_count = input('How many messages are you expecting?')
-        self.loop_listen(expected_message_count = expected_message_count)
+        self.loop_listen(expected_message_count = int(expected_message_count))
 
     def end_connection(self):
         print("Ending the TCP Connection.")

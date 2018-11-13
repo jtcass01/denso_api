@@ -9,8 +9,8 @@ Sub Main										' START MAIN
 	On Error Goto ErrorHandler					' Create disconnect error handler
 	I1 = 0
 	Do
-		S1 = Comm.Input(4)
-		PrintDbg S1
+'		S1 = Comm.Input(4)
+'		PrintDbg S1
 		Comm.Output 4, "OK " & Now
 		Delay 1
 	Loop Until I1<>0

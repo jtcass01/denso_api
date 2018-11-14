@@ -2,21 +2,34 @@
 ' AUTHOR : 		Jacob Taylor Cassady
 ' DESCRIPTION : TCP Server.
 
+#include "functions.pcs"
+
 Sub Main										' START MAIN
 	Comm.Open 4									' Open port number 4 (TCP Server)
 	Comm.Clear 4								' Clear port number 4
 	Wait Comm.State(4) = 2 						' Wait for connection from the client.
 	On Error Goto ErrorHandler					' Create disconnect error handler
 	I1 = 0
-	Do
-'		S1 = Comm.Input(4)
-'		PrintDbg S1
-		Comm.Output 4, "OK " & Now
+	Do											' Start a constant loop for reception
+		S1 = Comm.Input(4)						' Recieve input from the user
+
+		Select Case S1							' BEGIN SWITCH
+		Case "func_1"							' Case for func_1
+			call func_1()
+		Case "func_2"							' Case for func_2
+			call func_2()
+		Case "func_3"	                        ' Case for func_3
+			call func_3()
+		Case Else								' default case
+			call improper_response()
+		End Select								' END SWITCH
+
 		Delay 1
 	Loop Until I1<>0
 
 	Comm.Close 4								' Close port 4
 	Exit Sub									' END MAIN
+
 
 ErrorHandler:									' BEGIN ERRORHANDLER
 	Comm.Close 4, -1 							' Error occured disconnect from port 4
@@ -25,4 +38,6 @@ ErrorHandler:									' BEGIN ERRORHANDLER
 	Comm.Clear 4								' Clear port 4
 	Wait Comm.State(4) = 2 						' Wait for connection from the client
 	Resume 										' Clear the error-state, and resume the program from the line where an error occured	
-End Sub 										' END ERRORHANDLER
+
+
+End Sub 										' END Program

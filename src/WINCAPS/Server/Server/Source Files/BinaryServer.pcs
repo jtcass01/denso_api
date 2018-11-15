@@ -2,7 +2,7 @@
 ' AUTHOR : 		Jacob Taylor Cassady
 ' DESCRIPTION : TCP Server for binary communication.
 
-#include "functions.pcs"
+#include "methods.pcs"
 
 Sub Main										' START MAIN
 	Dim var as Variant							' Create a variant variable to store the response.
@@ -13,7 +13,7 @@ Sub Main										' START MAIN
 	On Error Goto ErrorHandler					' Create disconnect error handler
 	I1 = 0
 	Do											' Start a constant loop for reception
-		var = Comm.Input(5)						' Recieve input from the user
+		var = Comm.Input(5, 10000, 10)			' Recieve input from the user across port 5.  Wait 10000ms before timing out.  Expect 10 bytes.
 		Comm.Output 5, var						' Output the recieved message across TCP port 5
 
 		Delay 1									' Wait a second

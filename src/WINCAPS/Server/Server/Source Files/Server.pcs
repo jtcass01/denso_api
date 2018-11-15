@@ -2,7 +2,7 @@
 ' AUTHOR : 		Jacob Taylor Cassady
 ' DESCRIPTION : TCP Server.
 
-#include "functions.pcs"
+#include "methods.pcs"
 
 Sub Main										' START Server
 	Dim response as Variant						' Create a variable to store the response

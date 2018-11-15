@@ -21,7 +21,8 @@ class SocketClient(object):
 
     def loop_listen(self, expected_message_count = 10):
         while(1):
-            print(self.sock.recv(self.buffer_size))
+            self.sock.recv(self.buffer_size)
+            print()
 
     def send_message(self, message):
         self.sock.send(message.encode())
@@ -38,14 +39,15 @@ class SocketClient(object):
 
     def prompt_for_message(self):
         message = input('What would you like to send to the server?')
-        self.send_message(message = message)
+        print("Sending message: ", message + '\r')
+        self.send_message(message = (message + '\r'))
 
     def prompt_for_loop_listen(self):
-        expected_message_count = input('How many messages are you expecting?')
+        expected_message_count = input('How many messages are you expecting: ')
         self.loop_listen(expected_message_count = int(expected_message_count))
 
     def prompt_for_binary(self):
-        binary_string = input('Enter the binary representation you\'d like to send')
+        binary_string = input('Enter the binary representation you\'d like to send: ')
         self.sock.send(bytes(int(binary_string, base=2)))
 
     def end_connection(self):
@@ -60,7 +62,7 @@ class SocketClient(object):
         print("4) Send binary")
         print("0) end connection")
 
-        response = int(input("What would you like to do?"))
+        response = int(input("What would you like to do: "))
 
         if(response == 1):
             self.prompt_for_message()
@@ -82,7 +84,7 @@ if __name__ == "__main__":
     test_client = SocketClient()
 
     ip_address = "192.168.1.100"
-    port = int(input("What port would you like to connect to?"))
+    port = int(input("What port would you like to connect to: "))
 
     test_client.connect(ip_address=ip_address, port=port)
 

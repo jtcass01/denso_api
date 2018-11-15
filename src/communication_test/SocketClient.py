@@ -82,7 +82,7 @@ if __name__ == "__main__":
     test_client = SocketClient()
 
     ip_address = "192.168.1.100"
-    port = input("What port would you like to connect to?")
+    port = int(input("What port would you like to connect to?"))
 
     test_client.connect(ip_address=ip_address, port=port)
 

@@ -36,7 +36,6 @@ class SocketClient(object):
             for response in range(3):
                 print(self.sock.recv(self.buffer_size))
 
-
     def prompt_for_message(self):
         message = input('What would you like to send to the server?')
         self.send_message(message = message)
@@ -44,6 +43,10 @@ class SocketClient(object):
     def prompt_for_loop_listen(self):
         expected_message_count = input('How many messages are you expecting?')
         self.loop_listen(expected_message_count = int(expected_message_count))
+
+    def prompt_for_binary(self):
+        binary_string = input('Enter the binary representation you\'d like to send')
+        self.sock.send(int(binary_string, base=2))
 
     def end_connection(self):
         print("Ending the TCP Connection.")
@@ -53,7 +56,8 @@ class SocketClient(object):
         print("==== MENU ====")
         print("1) send a message")
         print("2) loop listen")
-        print("2) communication loop")
+        print("3) communication loop")
+        print("4) Send binary")
         print("0) end connection")
 
         response = int(input("What would you like to do?"))
@@ -64,6 +68,8 @@ class SocketClient(object):
             self.prompt_for_loop_listen()
         elif(response == 3):
             self.communication_loop()
+        elif(response == 4):
+            self.prompt_for_binary()
         elif(response == 0):
             self.end_connection()
         else:

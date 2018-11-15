@@ -17,12 +17,12 @@ Sub Main										' START Server
 		PrintDbg "Input recieved: " & response  ' Print the debug the message system.
 
 		Select Case response					' BEGIN SWITCH
-		Case "func_1"							' Case for func_1
+		Case "method_1"							' Case for func_1
 			call method_1()
-		Case "func_2"							' Case for func_2
-			call method_1()
-		Case "func_3"	                        ' Case for func_3
+		Case "method_2"							' Case for func_2
 			call method_2()
+		Case "method_3"	                        ' Case for func_3
+			call method_3()
 		Case Else								' default case
 			call improper_response()
 		End Select								' END SWITCH

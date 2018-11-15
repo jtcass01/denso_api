@@ -4,7 +4,7 @@
 
 #include "functions.pcs"
 
-Sub Server										' START Server
+Sub Main										' START Server
 	Dim response as Variant						' Create a variable to store the response
 
 	Comm.Open 4									' Open port number 4 (TCP Server)

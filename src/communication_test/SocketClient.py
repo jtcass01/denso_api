@@ -1,7 +1,7 @@
 import socket
 
 class SocketClient(object):
-    """description of class"""
+    """TCP Socket client for communicatign"""
     def __init__(self, sock=None, buffer_size=1024):
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     test_client = SocketClient()
 
     ip_address = "192.168.1.100"
-    port = 49152
+    port = input("What port would you like to connect to?")
 
     test_client.connect(ip_address=ip_address, port=port)
 

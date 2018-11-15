@@ -4,7 +4,7 @@
 
 #include "functions.pcs"
 
-Sub BinaryServer								' START MAIN
+Sub Main										' START MAIN
 	Dim var as Variant							' Create a variant variable to store the response.
 
 	Comm.Open 5									' Open port number 5 (TCP Server)

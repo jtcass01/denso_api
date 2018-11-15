@@ -46,7 +46,7 @@ class SocketClient(object):
 
     def prompt_for_binary(self):
         binary_string = input('Enter the binary representation you\'d like to send')
-        self.sock.send(int(binary_string, base=2))
+        self.sock.send(bytes(int(binary_string, base=2)))
 
     def end_connection(self):
         print("Ending the TCP Connection.")

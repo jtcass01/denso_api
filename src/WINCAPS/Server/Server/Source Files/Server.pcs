@@ -14,6 +14,7 @@ Sub Main										' START Server
 	I1 = 0
 	Do											' Start a constant loop for reception
 		response = Comm.Input(4)				' Recieve input from the user
+		PrintDbg "Input recieved: " & response  ' Print the debug the message system.
 
 		Select Case response					' BEGIN SWITCH
 		Case "func_1"							' Case for func_1

@@ -1,0 +1,34 @@
+'!TITLE "BinaryServer.pcs"
+' AUTHOR : 		Jacob Taylor Cassady
+' DESCRIPTION : TCP Server for binary communication.
+
+#include "functions.pcs"
+
+Sub BinaryServer								' START MAIN
+	Dim var as Variant							' Create a variant variable to store the response.
+
+	Comm.Open 5									' Open port number 5 (TCP Server)
+	Comm.Clear 5								' Clear port number 5
+	Wait Comm.State(5) = 2 						' Wait for connection from the client.
+	On Error Goto ErrorHandler					' Create disconnect error handler
+	I1 = 0
+	Do											' Start a constant loop for reception
+		var = Comm.Input(5)						' Recieve input from the user
+		Comm.Output 5, var						' Output the recieved message across TCP port 5
+
+		Delay 1									' Wait a second
+	Loop Until I1<>0							' Repeat
+
+	Comm.Close 5								' Close port 5
+	Exit Sub									' END MAIN
+
+
+ErrorHandler:									' BEGIN ERRORHANDLER
+	Comm.Close 5, -1 							' Error occured disconnect from port 4
+	PrintDbg "Err = " & Hex(Err.OriginalNumber)	' Print error number using hex representation.
+	Comm.Open 5									' Open port 4
+	Comm.Clear 5								' Clear port 4
+	Wait Comm.State(5) = 2 						' Wait for connection from the client
+	Resume 										' Clear the error-state, and resume the program from the line where an error occured	
+
+End Sub 										' END Program

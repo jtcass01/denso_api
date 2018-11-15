@@ -4,22 +4,24 @@
 
 #include "functions.pcs"
 
-Sub Main										' START MAIN
+Sub Server										' START Server
+	Dim response as Variant						' Create a variable to store the response
+
 	Comm.Open 4									' Open port number 4 (TCP Server)
 	Comm.Clear 4								' Clear port number 4
 	Wait Comm.State(4) = 2 						' Wait for connection from the client.
 	On Error Goto ErrorHandler					' Create disconnect error handler
 	I1 = 0
 	Do											' Start a constant loop for reception
-		S1 = Comm.Input(4)						' Recieve input from the user
+		response = Comm.Input(4)				' Recieve input from the user
 
-		Select Case S1							' BEGIN SWITCH
+		Select Case response					' BEGIN SWITCH
 		Case "func_1"							' Case for func_1
-			call func_1()
+			call method_1()
 		Case "func_2"							' Case for func_2
-			call func_2()
+			call method_1()
 		Case "func_3"	                        ' Case for func_3
-			call func_3()
+			call method_2()
 		Case Else								' default case
 			call improper_response()
 		End Select								' END SWITCH

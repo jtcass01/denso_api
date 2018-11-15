@@ -3,9 +3,11 @@
 ' DESCRIPTION : Main program.  Creates a task for a variety of pacscript processes.
 
 #include "Server.pcs"
+#include "BinaryServer.pcs"
 
 Sub Main
 	' Start the TCP Server.
 	RunByName "Server"
-	
+	RunByName "BinaryServer"	
+
 End Sub

@@ -1,0 +1,41 @@
+'!TITLE "Methods for calling from the Servers."
+
+Sub method_1
+	Comm.Open 6
+	Comm.Clear 6
+	I1 = 0
+	Do
+		Comm.Output 6, "Method_1 " & Now
+	Loop Until I1<>0
+	Comm.Close 6
+End Sub
+
+Sub method_2
+	Comm.Open 6
+	Comm.Clear 6
+	I1 = 0
+	Do
+		Comm.Output 6, "Method_2 " & Now
+	Loop Until I1<>0
+	Comm.Close 6
+End Sub
+
+Sub method_3
+	Comm.Open 6
+	Comm.Clear 6
+	I1 = 0
+	Do
+		Comm.Output 6, "Method_3 " & Now
+	Loop Until I1<>0
+	Comm.Close 6
+End Sub
+
+Sub improper_response
+	Comm.Open 6
+	Comm.Clear 6
+	I1 = 0
+	Do
+		Comm.Output 6, "improper_response " & Now
+	Loop Until I1<>0
+	Comm.Close 6
+End Sub

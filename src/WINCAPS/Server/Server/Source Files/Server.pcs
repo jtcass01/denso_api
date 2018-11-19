@@ -5,7 +5,12 @@
 #include "methods.pcs"
 
 Sub Main										' START Server
-	Dim response as Variant						' Create a variable to store the response
+	Dim response as String						' Create a variable to store the response
+	Dim variables as Variant
+	Dim function_enum as Integer
+	Dim index as Integer
+	Dim parameter_count as Integer
+	Dim parameters as Variant
 
 	Comm.Open 4									' Open port number 4 (TCP Server)
 	Comm.Clear 4								' Clear port number 4
@@ -15,17 +20,24 @@ Sub Main										' START Server
 	Do											' Start a constant loop for reception
 		response = Comm.Input(4)				' Recieve input from the user
 		PrintDbg "Input recieved: " & response  ' Print the debug the message system.
+		variables = split(response, ",")		' Split the response using the comma as a delimeter.  Store as array
 
-		Select Case response					' BEGIN SWITCH
-		Case "method_1"							' Case for func_1
-			call method_1()
-		Case "method_2"							' Case for func_2
-			call method_2()
-		Case "method_3"	                        ' Case for func_3
-			call method_3()
-		Case Else								' default case
-			call improper_response()
-		End Select								' END SWITCH
+		' Variables are formatted in the following order, each separated by a comma
+		' function_enum
+		' parameter_count
+		' p[0], p[1], ..., p[parameter_count - 1]
+		function_enum = variables( 0 )			' Retrieve the function enum
+		parameter_count = variables( 1 )			' Retrieve the number of parameters
+
+		PrintDbg "function_enum: " & Str( function_enum )  ' Print the debug the message system.
+		PrintDbg "parameter_count: " & Str( parameter_count )  ' Print the debug the message system.
+
+		parameters = CreateArray( parameter_count )				' Create an array to store the parameters
+
+		for index = 0 To parameter_count
+			parameters( index ) = variables( index + 2 )
+			PrintDbg "parameters( " & Str( index ) & " ) = " & variables( index + 2 )
+		Next
 
 		Delay 1
 	Loop Until I1<>0

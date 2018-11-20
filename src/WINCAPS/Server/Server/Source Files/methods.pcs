@@ -2,12 +2,11 @@
 ' AUTHOR : 		Jacob Taylor Cassady
 ' DESCRIPTION : Main program.  Creates a task for a variety of pacscript processes.
 
-Sub method_1(ByVal parameter_1 As Single, ByVal parameter_2 As Single, ByVal parameter_3 As Single)
+Sub method_1(parameter_1 As Single, parameter_2 As Single, parameter_3 As Single)
 	PrintDbg "Method 1 has been called with the following parameters: "
 	PrintDbg "parameter_1 = " & Str( parameter_1 )
 	PrintDbg "parameter_2 = " & Str( parameter_2 )
 	PrintDbg "parameter_3 = " & Str( parameter_3 )
-	Next
 End Sub
 
 Sub method_2(ByVal parameters() As Variant)

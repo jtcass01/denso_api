@@ -41,13 +41,9 @@ Sub Main										' START Server
 
 		Select Case method_enum
 		Case 1
-			Call method_1(parameters(0), parameters(1), parameters(2))
-		Case 2
-			Call method_2(parameters)
-		Case 3
-			Call method_3(parameters)
+			Run method_1( parameters( 0 ), parameters( 1 ), parameters( 2 ) )
 		Case Else
-			Call improper_response
+			Run improper_response
 		End Select
 
 		Delay 1

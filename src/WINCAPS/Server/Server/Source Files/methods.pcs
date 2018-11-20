@@ -2,50 +2,32 @@
 ' AUTHOR : 		Jacob Taylor Cassady
 ' DESCRIPTION : Main program.  Creates a task for a variety of pacscript processes.
 
-Sub method_1
-	PrintDbg "Entering Method 1."
-
-	Comm.Open 6
-	Comm.Clear 6
-	I1 = 0
-	Do
-		Comm.Output 6, "Method_1 " & Now
-	Loop Until I1<>0
-	Comm.Close 6
+Sub method_1(ByVal parameter_1 As Single, ByVal parameter_2 As Single, ByVal parameter_3 As Single)
+	PrintDbg "Method 1 has been called with the following parameters: "
+	PrintDbg "parameter_1 = " & Str( parameter_1 )
+	PrintDbg "parameter_2 = " & Str( parameter_2 )
+	PrintDbg "parameter_3 = " & Str( parameter_3 )
+	Next
 End Sub
 
-Sub method_2
-	PrintDbg "Entering Method 2."
+Sub method_2(ByVal parameters() As Variant)
+	PrintDbg "Method 2 has been called with the following parameters: "
 
-	Comm.Open 6
-	Comm.Clear 6
-	I1 = 0
-	Do
-		Comm.Output 6, "Method_2 " & Now
-	Loop Until I1<>0
-	Comm.Close 6
+	Dim parameter_index as Integer
+	for parameter_index = 0 To UBound(parameters)
+		PrintDbg "parameters( " & Str( parameter_index ) & " ) = " & parameters( parameter_index )
+	Next
 End Sub
 
-Sub method_3
-	PrintDbg "Entering Method 3."
+Sub method_3(ByVal parameters() As Variant)
+	PrintDbg "Method 3 has been called with the following parameters: "
 
-	Comm.Open 6
-	Comm.Clear 6
-	I1 = 0
-	Do
-		Comm.Output 6, "Method_3 " & Now
-	Loop Until I1<>0
-	Comm.Close 6
+	Dim parameter_index as Integer
+	for parameter_index = 0 To UBound(parameters)
+		PrintDbg "parameters( " & Str( parameter_index ) & " ) = " & parameters( parameter_index )
+	Next
 End Sub
 
 Sub improper_response
 	PrintDbg "Entering improper_response method."
-
-	Comm.Open 6
-	Comm.Clear 6
-	I1 = 0
-	Do
-		Comm.Output 6, "improper_response " & Now
-	Loop Until I1<>0
-	Comm.Close 6
 End Sub

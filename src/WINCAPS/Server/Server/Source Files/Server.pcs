@@ -7,7 +7,7 @@
 Sub Main										' START Server
 	Dim response as String						' Create a variable to store the response
 	Dim variables as Variant
-	Dim function_enum as Integer
+	Dim method_enum as Integer
 	Dim index as Integer
 	Dim parameter_count as Integer
 	Dim parameters as Variant
@@ -26,10 +26,10 @@ Sub Main										' START Server
 		' function_enum
 		' parameter_count
 		' p[0], p[1], ..., p[parameter_count - 1]
-		function_enum = variables( 0 )			' Retrieve the function enum
+		method_enum = variables( 0 )			' Retrieve the function enum
 		parameter_count = variables( 1 )			' Retrieve the number of parameters
 
-		PrintDbg "function_enum: " & Str( function_enum )  ' Print the debug the message system.
+		PrintDbg "function_enum: " & Str( method_enum )  ' Print the debug the message system.
 		PrintDbg "parameter_count: " & Str( parameter_count )  ' Print the debug the message system.
 
 		parameters = CreateArray( parameter_count )				' Create an array to store the parameters
@@ -38,6 +38,17 @@ Sub Main										' START Server
 			parameters( index ) = variables( index + 2 )
 			PrintDbg "parameters( " & Str( index ) & " ) = " & variables( index + 2 )
 		Next
+
+		Select Case method_enum
+		Case 1
+			Call method_1(parameters(0), parameters(1), parameters(2))
+		Case 2
+			Call method_2(parameters)
+		Case 3
+			Call method_3(parameters)
+		Case Else
+			Call improper_response
+		End Select
 
 		Delay 1
 	Loop Until I1<>0

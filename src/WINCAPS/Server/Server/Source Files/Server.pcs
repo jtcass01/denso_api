@@ -41,9 +41,9 @@ Sub Main										' START Server
 
 		Select Case method_enum
 		Case 1
-			Run method_1( parameters( 0 ), parameters( 1 ), parameters( 2 ) )
+			GoTo method_1
 		Case Else
-			Run improper_response
+			GoTo improper_response
 		End Select
 
 		Delay 1
@@ -61,5 +61,17 @@ ErrorHandler:									' BEGIN ERRORHANDLER
 	Wait Comm.State(4) = 2 						' Wait for connection from the client
 	Resume 										' Clear the error-state, and resume the program from the line where an error occured	
 
+
+method_1:
+	PrintDbg "Method 1 has been called with the following parameters: "
+
+	Dim parameter_index as Integer
+	for parameter_index = 0 To UBound(parameters)
+		PrintDbg "parameters( " & Str( parameter_index ) & " ) = " & parameters( parameter_index )
+	Resume
+
+improper_response:
+	PrintDbg "Entering improper_response method."
+	Resume
 
 End Sub 										' END Program

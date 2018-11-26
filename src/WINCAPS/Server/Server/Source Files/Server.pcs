@@ -2,8 +2,6 @@
 ' AUTHOR : 		Jacob Taylor Cassady
 ' DESCRIPTION : TCP Server.
 
-#include "methods.pcs"
-
 Sub Main										' START Server
 	Dim response as String						' Create a variable to store the response
 	Dim variables as Variant
@@ -68,6 +66,7 @@ method_1:
 	Dim parameter_index as Integer
 	for parameter_index = 0 To UBound(parameters)
 		PrintDbg "parameters( " & Str( parameter_index ) & " ) = " & parameters( parameter_index )
+	Next
 	Resume
 
 improper_response:

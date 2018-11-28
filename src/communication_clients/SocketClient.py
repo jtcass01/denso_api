@@ -1,7 +1,7 @@
 import socket
 
 class SocketClient(object):
-    """TCP Socket client for communicatign"""
+    """TCP Socket client for communication"""
     def __init__(self, sock=None, buffer_size=1024):
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

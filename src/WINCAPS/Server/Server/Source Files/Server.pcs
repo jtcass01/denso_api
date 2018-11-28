@@ -37,25 +37,26 @@ Sub Main										' START Server
 		PrintDbg "function_enum: " & Str( method_enum )  ' Print the debug the message system.
 		PrintDbg "parameter_count: " & Str( parameter_count )  ' Print the debug the message system.
 
-		Dim parameters(10) as Double
+		Dim parameters(10) as Single
 
 		for index = 0 To (parameter_count-1)
 			Let parameters( index ) = variables( index + 2 )
 			PrintDbg "parameters( " & Str( index ) & " ) = " & variables( index + 2 )
 		Next
 
-		PrintDbg "Done printing parameters.  Entering Select statement."
+		PrintDbg "Done Retrieving parameters. Printing..."
 
+'		Call display_parameters(parameters, parameter_count)
+
+
+		PrintDbg "Entering Select statement."
 		Select Case method_enum
-		Case 1
-			PrintDbg "Going to method_1"
-			GoTo method_1
 		Case 2
 			PrintDbg "Going to draw_method"
-			GoTo draw_method
+			Call ngs_draw(parameters(0), parameters(1), parameters(2))
 		Case Else
 			PrintDbg "Going to improper_response"
-			GoTo improper_response
+			Call improper_response(response)
 		End Select
 
 		PrintDbg "Finished select Case."
@@ -75,26 +76,29 @@ ErrorHandler:									' BEGIN ERRORHANDLER
 	Wait Comm.State(4) = 2 						' Wait for connection from the client
 	Resume 										' Clear the error-state, and resume the program from the line where an error occured	
 
+End Sub 
 
-method_1:
-	PrintDbg "Method 1 has been called with the following parameters: "
-	GoTo display_parameters
+'Sub display_parameters( params As Array, param_count As Integer)  Cannot get arrays as parameters working.
+'	Dim parameter_index as Integer
 
-draw_method:
-	PrintDbg "Draw has been called with the following parameters:"
+'	for parameter_index = 0 To (param_count - 1)
+'		PrintDbg "parameters( " & Str( parameter_index ) & " ) = " & params( parameter_index )
+'	Next
+'End Sub
 
-	PrintDbg "Draw L, V( " & Str(parameters( 0 )) & ", " & Str(parameters( 1 )) & ", " & Str(parameters( 2 )) & " )"
-	'Draw L, V ( parameters( 0 ), parameters( 1 ), parameters( 2 ) )
+Sub improper_response(response As String)
+	PrintDbg "You entered an improper response : " & response
+	PrintDbg "Please try again."
+End Sub
 
+Sub ngs_draw( x_axis As Single, y_axis As Single, z_axis As Single )
+	Dim destination_vector As Vector
 
-display_parameters:
-	Dim parameter_index as Integer
+	PrintDbg "ngs_draw has been called with the following parameters (" & Str(x_axis) & ", " & Str(y_axis) & ", " & Str(z_axis) & ")"
+	PrintDbg "Creating Vector..."
 
-	for parameter_index = 0 To (parameter_count - 1)
-		PrintDbg "parameters( " & Str( parameter_index ) & " ) = " & parameters( parameter_index )
-	Next
+	Let destination_vector = V(x_axis, y_axis, z_axis)
 
-improper_response:
-	PrintDbg "Entering improper_response method."
+	PrintDbg "Draw L, V(" & Str(x_axis) & ", " & Str(y_axis) & ", " & Str(z_axis) & ")"
 
-End Sub 										' END Program
+End Sub

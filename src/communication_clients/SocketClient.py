@@ -13,6 +13,7 @@ class SocketClient(object):
         port_description = (ip_address, port)
 
         print("Attempting to bind to port with description:", port_description)
+
         # Bind to the port description
         self.sock.connect(port_description)
 
@@ -37,6 +38,12 @@ class SocketClient(object):
             for response in range(3):
                 print(self.sock.recv(self.buffer_size))
 
+    def prompt_for_connection(self):
+        ip_address = "192.168.1.100"
+        port = int(input("What port would you like to connect to: "))
+
+        self.connect(ip_address=ip_address, port=port)
+
     def prompt_for_message(self):
         message = input('What would you like to send to the server: ')
         print("Sending message: ", message + '\r')
@@ -58,8 +65,9 @@ class SocketClient(object):
         print("==== MENU ====")
         print("1) send a message")
         print("2) loop listen")
-        print("3) communication loop")
+        print("3) communication loop [In progress...]")
         print("4) Send binary")
+        print("5) Reconnect")
         print("0) end connection")
 
         response = int(input("What would you like to do: "))
@@ -72,6 +80,9 @@ class SocketClient(object):
             self.communication_loop()
         elif(response == 4):
             self.prompt_for_binary()
+        elif(response == 5):
+            self.end_connection()
+            self.prompt_for_connection()
         elif(response == 0):
             self.end_connection()
         else:
@@ -82,11 +93,7 @@ class SocketClient(object):
 
 if __name__ == "__main__":
     test_client = SocketClient()
-
-    ip_address = "192.168.1.100"
-    port = int(input("What port would you like to connect to: "))
-
-    test_client.connect(ip_address=ip_address, port=port)
+    test_client.prompt_for_connection()
 
     response = 1
 

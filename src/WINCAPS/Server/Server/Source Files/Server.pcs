@@ -37,7 +37,7 @@ Sub Main										' START Server
 		PrintDbg "function_enum: " & Str( method_enum )  ' Print the debug the message system.
 		PrintDbg "parameter_count: " & Str( parameter_count )  ' Print the debug the message system.
 
-		Dim parameters(10) as Single
+		Dim parameters(100) as Single
 
 		for index = 0 To (parameter_count-1)
 			Let parameters( index ) = variables( index + 2 )
@@ -75,21 +75,14 @@ ErrorHandler:									' BEGIN ERRORHANDLER
 	Comm.Clear 4								' Clear port 4
 	Wait Comm.State(4) = 2 						' Wait for connection from the client
 	Resume 										' Clear the error-state, and resume the program from the line where an error occured	
-
 End Sub 
 
-'Sub display_parameters( params As Array, param_count As Integer)  Cannot get arrays as parameters working.
-'	Dim parameter_index as Integer
-
-'	for parameter_index = 0 To (param_count - 1)
-'		PrintDbg "parameters( " & Str( parameter_index ) & " ) = " & params( parameter_index )
-'	Next
-'End Sub
 
 Sub improper_response(response As String)
 	PrintDbg "You entered an improper response : " & response
 	PrintDbg "Please try again."
 End Sub
+
 
 Sub ngs_draw( x_axis As Single, y_axis As Single, z_axis As Single )
 	Dim destination_vector As Vector
@@ -100,5 +93,19 @@ Sub ngs_draw( x_axis As Single, y_axis As Single, z_axis As Single )
 	Let destination_vector = V(x_axis, y_axis, z_axis)
 
 	PrintDbg "Draw L, V(" & Str(x_axis) & ", " & Str(y_axis) & ", " & Str(z_axis) & ")"
+End Sub
 
+Sub ngs_drive_relative( axis_number As Single, displacement as Single)
+	PrintDbg "Drive (" & axis_number & ", " & displacement & ")"
+	' Drive (axis_number, displacement)
+End Sub
+
+Sub ngs_drive_absolute( axis_number As Single, displacement as Single)
+	PrintDbg "DriveA (" & axis_number & ", " & displacement & ")"
+	' DriveA (axis_number, displacement)
+End Sub
+
+Sub ngs_delay(delay_time as Single)
+	PrintDbg "Delay " & delay_time
+'	Delay delay_time
 End Sub

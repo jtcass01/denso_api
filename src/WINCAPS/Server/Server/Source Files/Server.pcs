@@ -44,16 +44,17 @@ Sub Main										' START Server
 			PrintDbg "parameters( " & Str( index ) & " ) = " & variables( index + 2 )
 		Next
 
-		PrintDbg "Done Retrieving parameters. Printing..."
-
-'		Call display_parameters(parameters, parameter_count)
-
-
 		PrintDbg "Entering Select statement."
 		Select Case method_enum
-		Case 2
-			PrintDbg "Going to draw_method"
+		Case 1
+			PrintDbg "Going to draw method"
 			Call ngs_draw(parameters(0), parameters(1), parameters(2))
+		Case 2
+			PrintDbg "Going to drive method"
+			Call ngs_drive(parameters(0), parameters(1))
+		Case 3
+			PrintDbg "Going to absolute drive method"
+			Call ngs_drive_absolute(parameters(0), parameters(1))
 		Case Else
 			PrintDbg "Going to improper_response"
 			Call improper_response(response)
@@ -95,17 +96,17 @@ Sub ngs_draw( x_axis As Single, y_axis As Single, z_axis As Single )
 	PrintDbg "Draw L, V(" & Str(x_axis) & ", " & Str(y_axis) & ", " & Str(z_axis) & ")"
 End Sub
 
-Sub ngs_drive_relative( axis_number As Single, displacement as Single)
-	PrintDbg "Drive (" & axis_number & ", " & displacement & ")"
+Sub ngs_drive( axis_number As Single, displacement as Single)
+	PrintDbg "Drive (" & Str(axis_number) & ", " & Str(displacement) & ")"
 	' Drive (axis_number, displacement)
 End Sub
 
 Sub ngs_drive_absolute( axis_number As Single, displacement as Single)
-	PrintDbg "DriveA (" & axis_number & ", " & displacement & ")"
+	PrintDbg "DriveA (" & Str(axis_number) & ", " & Str(displacement) & ")"
 	' DriveA (axis_number, displacement)
 End Sub
 
 Sub ngs_delay(delay_time as Single)
-	PrintDbg "Delay " & delay_time
+	PrintDbg "Delay " & Str(delay_time)
 '	Delay delay_time
 End Sub

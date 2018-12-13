@@ -46,7 +46,7 @@ class SocketClient(object):
 
     def prompt_for_message(self):
         message = input('What would you like to send to the server: ')
-        print("Sending message: ", message + '\r')
+        print("Sending message: ", (message + '\r'))
         self.send_message(message = (message + '\r'))
 
     def prompt_for_loop_listen(self):

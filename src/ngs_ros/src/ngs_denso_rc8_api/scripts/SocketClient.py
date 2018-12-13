@@ -40,11 +40,11 @@ class SocketClient(object):
                 print(self.sock.recv(self.buffer_size))
 
     def prompt_for_connection(self):
-        ip_address = str(input("What is the ipaddress of the robot [default = 192.168.1.100] : "))
+        ip_address = raw_input("What is the ipaddress of the robot [default = 192.168.1.100] : ")
         if ip_address == "":
             ip_address = "192.168.1.100"
 
-        port = input("What port would you like to connect to [default = 49152]: ")
+        port = raw_input("What port would you like to connect to [default = 49152]: ")
         if port == "":
             port = 49152
         else:

@@ -18,6 +18,6 @@ if __name__ == '__main__':
     try:
         print("Initialize test talker.")
         talker()
-    except rospy.ROSInterruptException:
+    except (rospy.ROSInterruptException, KeyboardInterrupt):
         print("Shutting down test talker...")
         pass

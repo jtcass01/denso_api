@@ -8,6 +8,7 @@ class SocketClient(object):
         else:
             self.sock = sock
         self.buffer_size = buffer_size
+        self.prompt_for_connection()
 
     def connect(self, ip_address, port):
         port_description = (ip_address, port)

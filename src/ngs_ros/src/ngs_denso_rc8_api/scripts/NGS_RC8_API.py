@@ -1,5 +1,7 @@
 import enum
 
+from SocketClient import SocketClient
+
 class NGS_RC8_API():
     '''
     Class Description:
@@ -11,7 +13,8 @@ class NGS_RC8_API():
         '''
         Constructor
         '''
-        pass
+#        self.socket_client = SocketClient()
+        self.socket_client = None
 
     def __del__(self):
         '''
@@ -19,12 +22,18 @@ class NGS_RC8_API():
         '''
         pass
 
+    def reconnect(self):
+        self.socket_client.end_connection()
+        self.socket_client.prompt_for_connection()
+
     def call_function(self, input_string):
         print("\nFunction input string: ", input_string)
 
         encoded_input = self.encode_input(input_string)
 
         print("Encoded function input: ", encoded_input)
+
+#        self.socket_client.send_message(encoded_input + '\r')
 
 
     def encode_input(self, input_string):

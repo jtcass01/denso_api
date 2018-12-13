@@ -27,11 +27,11 @@ class NGS_RC8_API():
         self.socket_client.prompt_for_connection()
 
     def call_function(self, input_string):
-        print("\nFunction input string: ", input_string)
+        print("\nFunction input string: " + input_string)
 
         encoded_input = self.encode_input(input_string)
 
-        print("Encoded function input: ", encoded_input)
+        print("Encoded function input: " + encoded_input)
 
 #        self.socket_client.send_message(encoded_input + '\r')
 

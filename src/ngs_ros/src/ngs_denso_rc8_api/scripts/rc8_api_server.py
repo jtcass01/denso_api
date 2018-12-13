@@ -5,12 +5,11 @@ from std_msgs.msg import String
 from NGS_RC8_API import NGS_RC8_API
 from SocketClient import SocketClient
 
+socket_client = SocketClient()
+
 class API_Server(object):
     def __init__(self):
         self.api = NGS_RC8_API()
-
-    def issue_command_to_rc8(self, command):
-        rospy.loginfo("Issuing command to Rc8: ", command.data)
 
     def start_server(self):
         # In ROS, nodes are uniquely named. If two nodes with the same
@@ -25,6 +24,11 @@ class API_Server(object):
         # spin() simply keeps python from exiting until this node is stopped
         rospy.spin()
 
+    @staticmethod
+    def issue_command_to_rc8(command):
+        rospy.loginfo("Issuing command to Rc8: ", command.data)
+
 if __name__ == '__main__':
     server = API_Server()
+    socket_client.prompt_for_connection()
     server.start_server()

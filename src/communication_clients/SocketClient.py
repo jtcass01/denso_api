@@ -45,7 +45,7 @@ class SocketClient(object):
         self.connect(ip_address=ip_address, port=port)
 
     def prompt_for_message(self):
-        message = str(input('What would you like to send to the server: '))
+        message = input('What would you like to send to the server: ')
         print("Sending message: " + message + '\r')
         self.send_message(message = message + '\r')
 

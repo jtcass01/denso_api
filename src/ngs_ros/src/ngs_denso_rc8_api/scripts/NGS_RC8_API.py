@@ -13,8 +13,7 @@ class NGS_RC8_API():
         '''
         Constructor
         '''
-#        self.socket_client = SocketClient()
-        self.socket_client = None
+        self.socket_client = SocketClient()
 
     def __del__(self):
         '''
@@ -33,7 +32,7 @@ class NGS_RC8_API():
 
         print("Encoded function input: " + encoded_input)
 
-#        self.socket_client.send_message(encoded_input + '\r')
+        self.socket_client.send_message(encoded_input + '\r')
 
 
     def encode_input(self, input_string):

@@ -26,7 +26,7 @@ if __name__ == '__main__':
         print("Starting NGS RC8 api server...")
         server = API_Server()
         server.start_server()
-    except rospy.ROSInterruptException:
+    except (rospy.ROSInterruptException, KeyboardInterrupt):
         print("Shutting down server...")
         del server
         pass

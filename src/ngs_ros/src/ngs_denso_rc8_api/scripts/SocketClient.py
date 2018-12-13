@@ -8,6 +8,7 @@ class SocketClient(object):
         else:
             self.sock = sock
         self.buffer_size = buffer_size
+        self.prompt_for_connection()
 
     def connect(self, ip_address, port):
         port_description = (ip_address, port)
@@ -39,8 +40,15 @@ class SocketClient(object):
                 print(self.sock.recv(self.buffer_size))
 
     def prompt_for_connection(self):
-        ip_address = "192.168.1.100"
-        port = int(input("What port would you like to connect to: "))
+        ip_address = input("What is the ipaddress of the robot [default = 192.168.1.100] : ")
+        if ip_address == "":
+            ip_address = "192.168.1.100"
+
+        port = input("What port would you like to connect to [default = 49152]: ")
+        if port == "":
+            port = 49152
+        else:
+            port = int(port)
 
         self.connect(ip_address=ip_address, port=port)
 
@@ -93,7 +101,6 @@ class SocketClient(object):
 
 if __name__ == "__main__":
     test_client = SocketClient()
-    test_client.prompt_for_connection()
 
     response = 1
 

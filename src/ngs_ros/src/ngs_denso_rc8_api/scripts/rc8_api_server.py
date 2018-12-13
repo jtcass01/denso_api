@@ -12,11 +12,6 @@ class API_Server(object):
         self.api = NGS_RC8_API()
 
     def start_server(self):
-        # In ROS, nodes are uniquely named. If two nodes with the same
-        # name are launched, the previous one is kicked off. The
-        # anonymous=True flag means that rospy will choose a unique
-        # name for our 'listener' node so that multiple listeners can
-        # run simultaneously.
         rospy.init_node('ngs_rc8_api_server', anonymous=True)
 
         rospy.Subscriber("rc8_command", String, self.issue_command_to_rc8)
@@ -27,8 +22,9 @@ class API_Server(object):
     @staticmethod
     def issue_command_to_rc8(command):
         rospy.loginfo("Issuing command to Rc8: ", command.data)
+        socket_client.send_message(command.data + '\r')
 
 if __name__ == '__main__':
     server = API_Server()
-    socket_client.prompt_for_connection()
+#    socket_client.prompt_for_connection()
     server.start_server()

@@ -1,0 +1,8 @@
+prefix=/home/ngs/jacob_ws/denso_api/src/ngs_ros/devel
+
+Name: ngs_denso_rc8_api
+Description: Description of ngs_denso_rc8_api
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/ngs/jacob_ws/denso_api/src/ngs_ros/devel/lib 
+Requires: 

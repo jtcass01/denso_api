@@ -1,0 +1,2 @@
+ngs_denso_rc8_api
+-DCATKIN_DEVEL_PREFIX=/home/ngs/jacob_ws/denso_api/src/ngs_ros/devel -DCMAKE_INSTALL_PREFIX=/home/ngs/jacob_ws/denso_api/src/ngs_ros/install -G Unix Makefiles

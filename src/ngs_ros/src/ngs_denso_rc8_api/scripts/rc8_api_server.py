@@ -8,7 +8,7 @@ from SocketClient import SocketClient
 socket_client = SocketClient()
 
 def issue_command_to_rc8(command):
-    rospy.loginfo("Issuing command to Rc8: ", command.data)
+    rospy.loginfo("Issuing command to Rc8: " command.data)
     socket_client.send_message(command.data + '\r')
 
 class API_Server(object):

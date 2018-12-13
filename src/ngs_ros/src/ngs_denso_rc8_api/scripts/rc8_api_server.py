@@ -22,5 +22,11 @@ class API_Server(object):
         self.api.call_function(command.data)
 
 if __name__ == '__main__':
-    server = API_Server()
-    server.start_server()
+    try:
+        print("Starting NGS RC8 api server...")
+        server = API_Server()
+        server.start_server()
+    except rospy.ROSInterruptException:
+        print("Shutting down server...")
+        del server
+        pass

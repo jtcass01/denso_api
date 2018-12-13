@@ -9,7 +9,7 @@ def talker():
     rospy.init_node('test_talker', anonymous=True)
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
-        rc8_command = input("What would you like to send to the API_Server?")
+        rc8_command = str(input("What would you like to send to the API_Server : "))
         rospy.loginfo("Sending: " + rc8_command)
         pub.publish(rc8_command)
         rate.sleep()

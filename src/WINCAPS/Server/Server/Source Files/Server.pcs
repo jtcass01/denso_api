@@ -1,82 +1,67 @@
-'!TITLE "Server.pcs"
+'!TITLE  : 		"Server.pcs"
 ' AUTHOR : 		Jacob Taylor Cassady
 ' DESCRIPTION : TCP Server.
 
 Sub Main										' START Server
-	Dim response as String						' Create a variable to store the response
-	Dim variables as Variant
-	Dim method_enum as Integer
-	Dim index as Integer
-	Dim parameter_count as Integer
+	Dim command as String						' Create a variable to store the response
+	Dim command_enum as Integer
+	Dim parsed_command as Variant
 
-	PrintDbg "Initializing Port 4 - TCP Server"
-	Comm.Open 4									' Open port number 4 (TCP Server)
-	Comm.Clear 4								' Clear port number 4
-
-	PrintDbg "Waiting for connection from the client."
-	Wait Comm.State(4) = 2 						' Wait for connection from the client.
+	Call create_tcp_connection(4)
 
 	On Error Goto ErrorHandler					' Create disconnect error handler
 
 	PrintDbg "Connection established.  Looping for reception of commands."
+
 	I1 = 0
 	Do											' Start a constant loop for reception
 		PrintDbg "Waiting for input from Port 4"		
-		response = Comm.Input(4)				' Recieve input from the user
-		PrintDbg "Input recieved: " & response  ' Print the debug the message system.
+		command = Comm.Input(4)				' Recieve input from the user
+		PrintDbg "Command recieved: " & command  ' Print the debug the message system.
 		PrintDbg "Attempting to decode...."
-		variables = split(response, ",")		' Split the response using the comma as a delimeter.  Store as array
+		parsed_command = split(command, ";")		' Split the response using the comma as a delimeter.  Store as array
 
 		' Variables are formatted in the following order, each separated by a comma
 		' function_enum
 		' parameter_count
 		' p[0], p[1], ..., p[parameter_count - 1]
-		method_enum = variables( 0 )			' Retrieve the function enum
-		parameter_count = variables( 1 )			' Retrieve the number of parameters
+		command_enum = parsed_command( 0 )			' Retrieve the function enum
 
-		PrintDbg "function_enum: " & Str( method_enum )  ' Print the debug the message system.
-		PrintDbg "parameter_count: " & Str( parameter_count )  ' Print the debug the message system.
 
-		Dim parameters(100) as Single
-
-		for index = 0 To (parameter_count-1)
-			Let parameters( index ) = variables( index + 2 )
-			PrintDbg "parameters( " & Str( index ) & " ) = " & variables( index + 2 )
-		Next
-
-		PrintDbg "Entering Select statement."
-		Select Case method_enum
-		Case 1
-			PrintDbg "Going to draw method"
-			Call ngs_draw(parameters(0), parameters(1), parameters(2))
-		Case 2
-			PrintDbg "Going to drive method"
-			Call ngs_drive(parameters(0), parameters(1))
-		Case 3
-			PrintDbg "Going to absolute drive method"
-			Call ngs_drive_absolute(parameters(0), parameters(1))
-		Case Else
-			PrintDbg "Going to improper_response"
-			Call improper_response(response)
-		End Select
-
-		PrintDbg "Finished select Case."
+		PrintDbg "command_enum: " & Str( command_enum )  ' Print the debug the message system.
 
 		Delay 1
 	Loop Until I1<>0
 
-	Comm.Close 4								' Close port 4
+	Call end_tcp_connection(4)
 	Exit Sub									' END MAIN
 
 
 ErrorHandler:									' BEGIN ERRORHANDLER
-	Comm.Close 4, -1 							' Error occured disconnect from port 4
+	Call end_tcp_connection(4)
+
 	PrintDbg "Err = " & Hex(Err.OriginalNumber)	' Print error number using hex representation.
-	Comm.Open 4									' Open port 4
-	Comm.Clear 4								' Clear port 4
-	Wait Comm.State(4) = 2 						' Wait for connection from the client
+
+	Call create_tcp_connection(4)
+
 	Resume 										' Clear the error-state, and resume the program from the line where an error occured	
 End Sub 
+
+
+''' TCP CONNECTION METHODS  '''
+Sub create_tcp_connection(port_number As Integer)
+	PrintDbg "Opening a TCP connection over port: " & Str(port_number)
+	Comm.Open port_number						' Open port number 4 (TCP Server)
+	Comm.Clear port_number						' Clear port number 4
+
+	PrintDbg "Waiting for connection from the client over port: " & Str(port_number)
+	Wait Comm.State(port_number) = 2 			' Wait for connection from the client.
+End Sub
+
+Sub end_tcp_connection(port_number As Integer)
+	Comm.Close port_number, -1					' Disconnect from port
+	PrintDbg "Successfully disconnected from port: " & Str(port_number)
+End Sub
 
 
 Sub improper_response(response As String)
@@ -85,6 +70,7 @@ Sub improper_response(response As String)
 End Sub
 
 
+''' MOVEMENT METHODS  '''
 Sub ngs_draw( x_axis As Single, y_axis As Single, z_axis As Single )
 	Dim destination_vector As Vector
 

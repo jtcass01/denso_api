@@ -1,8 +1,15 @@
 import socket
 
 class SocketClient(object):
-    """TCP Socket client for communication"""
+    '''
+    '   Class Description: TCP Socket client
+    '   Author: Jacob Taylor Cassady
+    '''
     def __init__(self, sock=None, buffer_size=1024):
+        '''
+        '   Constructor
+        '   Author: Jacob Taylor Cassady
+        '''
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
@@ -10,7 +17,20 @@ class SocketClient(object):
         self.buffer_size = buffer_size
         self.prompt_for_connection()
 
+    def __del__(self):
+        '''
+        '   Destructor
+        '   Author: Jacob Taylor Cassady
+        '''
+        del self.buffer_size
+        del self.sock
+        del self
+
     def connect(self, ip_address, port):
+        '''
+        '   Method Description: Connects to a given ip_address and port
+        '   Author: Jacob Taylor Cassady
+        '''
         port_description = (ip_address, port)
 
         print("Attempting to bind to port with description:", port_description)
@@ -22,24 +42,26 @@ class SocketClient(object):
 
 
     def loop_listen(self, expected_message_count = 10):
+        '''
+        '   Method Description: Constantly checks the socket for a message and prints it
+        '   Author: Jacob Taylor Cassady
+        '''
         while(1):
-            self.sock.recv(self.buffer_size)
-            print()
+            response = self.sock.recv(self.buffer_size)
+            print(response)
 
     def send_message(self, message):
+        '''
+        '   Method Description: Encodes a message and sends it across the socket
+        '   Author: Jacob Taylor Cassady
+        '''
         self.sock.send(message.encode())
 
-    def communication_loop(self):
-        message = ""
-
-        while(message != "QUIT"):
-            message = input('What would you like to send to the server: ')
-            self.send_message(message = message)
-
-            for response in range(3):
-                print(self.sock.recv(self.buffer_size))
-
     def prompt_for_connection(self):
+        '''
+        '   Method Description: Prompts for a connection from the user and attempts to create a socket matching the given definition.
+        '   Author: Jacob Taylor Cassady
+        '''
         ip_address = raw_input("What is the ipaddress of the robot [default = 192.168.1.100] : ")
         if ip_address == "":
             ip_address = "192.168.1.100"
@@ -53,23 +75,43 @@ class SocketClient(object):
         self.connect(ip_address=ip_address, port=port)
 
     def prompt_for_message(self):
+        '''
+        '   Method Description: Requests a message form the user and sends it
+        '   Author: Jacob Taylor Cassady
+        '''
         message = input('What would you like to send to the server: ')
         print("Sending message: " + message + '\r')
         self.send_message(message = message + '\r')
 
     def prompt_for_loop_listen(self):
+        '''
+        '   Method Description: Asks the user how many messages they are expecting and prints out that many.
+        '   Author: Jacob Taylor Cassady
+        '''
         expected_message_count = input('How many messages are you expecting: ')
         self.loop_listen(expected_message_count = int(expected_message_count))
 
     def prompt_for_binary(self):
+        '''
+        '   Method Description: Prompts for a message and encodes it in binary.
+        '   Author: Jacob Taylor Cassady
+        '''
         binary_string = input('Enter the binary representation you\'d like to send: ')
         self.sock.send(bytes(int(binary_string, base=2)))
 
     def end_connection(self):
+        '''
+        '   Method Description: Closes the socket.
+        '   Author: Jacob Taylor Cassady
+        '''
         print("Ending the TCP Connection.")
         self.sock.close()
 
     def menu(self):
+        '''
+        '   Method Description: Prints a menu, requests a response, and calls the matching function.
+        '   Author: Jacob Taylor Cassady
+        '''
         print("==== MENU ====")
         print("1) send a message")
         print("2) loop listen")
@@ -100,6 +142,10 @@ class SocketClient(object):
 
 
 if __name__ == "__main__":
+    '''
+    ' Test Script for the SocketClient.  Will run when you call 'python SocketClient.py' from the command line.
+    ' Author: Jacob Taylor Cassady
+    '''
     test_client = SocketClient()
 
     response = 1

@@ -4,8 +4,6 @@
 
 Sub Main										' START Server
 	Dim command as String						' Create a variable to store the response
-	Dim command_enum as Integer
-	Dim parsed_command as Variant
 
 	Call create_tcp_connection(4)
 
@@ -17,18 +15,9 @@ Sub Main										' START Server
 	Do											' Start a constant loop for reception
 		PrintDbg "Waiting for input from Port 4"		
 		command = Comm.Input(4)				' Recieve input from the user
-		PrintDbg "Command recieved: " & command  ' Print the debug the message system.
-		PrintDbg "Attempting to decode...."
-		parsed_command = split(command, ";")		' Split the response using the comma as a delimeter.  Store as array
 
-		' Variables are formatted in the following order, each separated by a comma
-		' function_enum
-		' parameter_count
-		' p[0], p[1], ..., p[parameter_count - 1]
-		command_enum = parsed_command( 0 )			' Retrieve the function enum
-
-
-		PrintDbg "command_enum: " & Str( command_enum )  ' Print the debug the message system.
+		PrintDbg "Issuing command: " & command	
+		Call command_robot(command) 		' Call Command
 
 		Delay 1
 	Loop Until I1<>0
@@ -48,6 +37,31 @@ ErrorHandler:									' BEGIN ERRORHANDLER
 End Sub 
 
 
+Sub command_robot( command As String )
+	PrintDbg "Command recieved: " & command  ' Print the debug the message system.
+	PrintDbg "Attempting to decode...."
+
+	Dim parsed_command as Variant
+	Dim command_enum as Integer
+
+	' Parse the command
+	parsed_command = split(command, ";")		' Split the response using the comma as a delimeter.  Store as array
+
+	command_enum = parsed_command( 0 )			' Retrieve the function enum
+	PrintDbg "command_enum: " & Str( command_enum )  ' Print the debug the message system.
+
+	Select Case command_enum
+	Case 1
+		Call move_command( command )
+	Case 2
+		Call draw_command( command )
+	Case Else
+		PrintDbg "Command enum not recognized."
+	End Select
+
+End Sub
+
+
 ''' TCP CONNECTION METHODS  '''
 Sub create_tcp_connection(port_number As Integer)
 	PrintDbg "Opening a TCP connection over port: " & Str(port_number)
@@ -64,35 +78,146 @@ Sub end_tcp_connection(port_number As Integer)
 End Sub
 
 
-Sub improper_response(response As String)
-	PrintDbg "You entered an improper response : " & response
-	PrintDbg "Please try again."
+''' MOVE METHODS  '''
+Sub move_command( command As String )
+	Dim parsed_command as Variant
+	Dim interpolation_type As String
+	Dim target As String
+
+	' Parse the command
+	parsed_command = split(command, ";")		' Split the response using the comma as a delimeter.  Store as array
+
+	' Retrieve interpolation type
+	interpolation_type = parsed_command(1)
+	PrintDbg "Interpolation type = " & interpolation_type
+
+	' target position
+	target = Mid(command, InStrRev(command, ";") + 1)
+
+	Select Case interpolation_type
+	Case "P"
+		TakeArm Keep=1
+		Call move_ptp( target )
+	Case "L"
+		TakeArm Keep=1
+		Call move_linear( target )
+	Case Else
+		PrintDbg "Interpolation method not recognized."
+	End Select
 End Sub
 
 
-''' MOVEMENT METHODS  '''
-Sub ngs_draw( x_axis As Single, y_axis As Single, z_axis As Single )
-	Dim destination_vector As Vector
+Sub move_ptp( target As String )
+	PrintDbg "PTP Interpolation"
+	Dim target_type As String
+	Dim target_position As Position
+	Dim target_joint As Joint
 
-	PrintDbg "ngs_draw has been called with the following parameters (" & Str(x_axis) & ", " & Str(y_axis) & ", " & Str(z_axis) & ")"
-	PrintDbg "Creating Vector..."
+	' Determine position type:
+	target_type = Left(target, 1)
+	PrintDbg "target_type: " & target_type
 
-	Let destination_vector = V(x_axis, y_axis, z_axis)
-
-	PrintDbg "Draw L, V(" & Str(x_axis) & ", " & Str(y_axis) & ", " & Str(z_axis) & ")"
+	Select Case target_type
+	Case "P"															' Position
+		target_position = target
+		PrintDbg "Move P, " & target
+		Move P, target_position
+	Case "J"															' Joint
+		target_joint = target
+		PrintDbg "Move P, " & target
+		Move P, target_joint
+	Case Else
+		PrintDbg "target type not recognized."
+	End Select
 End Sub
 
-Sub ngs_drive( axis_number As Single, displacement as Single)
-	PrintDbg "Drive (" & Str(axis_number) & ", " & Str(displacement) & ")"
-	' Drive (axis_number, displacement)
+
+Sub move_linear( target As String )
+	PrintDbg "Linear Interpolation"
+	Dim target_type As String
+	Dim target_position As Position
+	Dim target_joint As Joint
+
+	' Determine position type:
+	target_type = Left(target, 1)
+	PrintDbg "target_type: " & target_type
+
+	Select Case target_type
+	Case "P"															' Position
+		target_position = target
+		PrintDbg "Move L, " & target
+		Move L, target_position
+	Case "J"															' Joint
+		target_joint = target
+		PrintDbg "Move L, " & target
+		Move L, target_joint
+	Case Else
+		PrintDbg "Target position datatype type not recognized."
+	End Select
 End Sub
 
-Sub ngs_drive_absolute( axis_number As Single, displacement as Single)
-	PrintDbg "DriveA (" & Str(axis_number) & ", " & Str(displacement) & ")"
-	' DriveA (axis_number, displacement)
+''' DRAW METHODS  '''
+Sub draw_command( command As String )
+	Dim parsed_command as Variant
+	Dim interpolation_type As String
+	Dim target As String
+
+	' Parse the command
+	parsed_command = split(command, ";")		' Split the response using the comma as a delimeter.  Store as array
+
+	' Retrieve interpolation type
+	interpolation_type = parsed_command(1)
+
+	' target position
+	target = Mid(command, InStrRev(command, ";") + 1)
+
+	Select Case interpolation_type
+	Case "P"
+		TakeArm Keep=1
+		Call draw_ptp( target )
+	Case "L"
+		TakeArm Keep=1
+		Call draw_linear( target )
+	Case Else
+		PrintDbg "Interpolation method not recognized."
+	End Select
 End Sub
 
-Sub ngs_delay(delay_time as Single)
-	PrintDbg "Delay " & Str(delay_time)
-'	Delay delay_time
+
+Sub draw_ptp( target As String )
+	PrintDbg "PTP Interpolation"
+	Dim target_type As String
+	Dim target_vector As Vector
+
+	' Determine target position type:
+	target_type = Left(target, 1)
+	PrintDbg "target_type: " & target_type
+
+	Select Case target_type
+	Case "V"															' Vector
+		target_vector = target
+		PrintDbg "Draw P, " & target_vector
+		Draw P, target_vector
+	Case Else
+		PrintDbg "Target position datatype not recognized."
+	End Select
+End Sub
+
+Sub draw_linear( target As String )
+	PrintDbg "Linear Interpolation"
+	Dim target_type As String
+	Dim target_vector As Vector
+
+	' Determine target position type:
+	target_type = Left(target, 1)
+	PrintDbg "target_type: " & target_type
+
+	Select Case target_type
+	Case "V"															' Vector
+		target_vector = target
+		PrintDbg "Draw L, " & target_vector
+		Draw L, target_vector
+	Case Else
+		PrintDbg "Target position datatype not recognized."
+	End Select
 End Sub

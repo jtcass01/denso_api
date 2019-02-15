@@ -16,14 +16,14 @@ class NGS_RC8_API():
         self.socket_connection = socket_connection
 
         self.implemented_functions = {
-            "MOVE" : self.RC8Functions.MOVE,
-            "DRAW" : self.RC8Functions.DRAW
-            #            "DRIVE" : self.RC8Functions.DRIVE,
-            #            "DRIVEA" : self.RC8Functions.DRIVEA
+            "MOVE" : self.RC8Commands.MOVE,
+            "DRAW" : self.RC8Commands.DRAW,
+            "DRIVE" : self.RC8Commands.DRIVE
+#            "DRIVEA" : self.RC8Commands.DRIVEA
         }
 
         # Ensure there are no descrepancies between the implemented functions and the functions held within the enum
-        assert len(self.implemented_functions) == len(NGS_RC8_API.RC8Functions), "There is a descrepancy in the number of implemented RC8Functions and the dictionary used to map these functions.  Dictionary's current state:\n\t" + str(self.implemented_functions)
+        assert len(self.implemented_functions) == len(NGS_RC8_API.RC8Commands), "There is a descrepancy in the number of implemented RC8Commands and the dictionary used to map these functions.  Dictionary's current state:\n\t" + str(self.implemented_functions)
 
         # Create a SocketClient connection if the API requests it.  If not, enters echo mode.
         if socket_connection == True:
@@ -33,12 +33,13 @@ class NGS_RC8_API():
         '''
         ' Destructor
         '''
+        del self.implemented_functions
+
         if self.socket_connection == True:
             del self.socket_client
 
         del self.socket_connection
         del self
-        pass
 
     def reconnect(self):
         '''
@@ -66,15 +67,27 @@ class NGS_RC8_API():
             self.socket_client.send_message(encoded_input + '\r')
 
 
-    class RC8Functions(enum.Enum):
+    class RC8Commands(enum.Enum):
         '''
-        ' Class Description: Enum class for keeping a list of implemented functions on RC8 PacScript Server.
+        ' Class Description: Enum class for keeping a list of implemented commands on RC8 PacScript Server.
         ' Author: Jacob Taylor Cassady
         '''
         MOVE = 1
+        '''
+        ' Move Command: To move the robot to the designated coordinates.
+        '''
         DRAW = 2
-#        DRIVE = 3
+        '''
+        ' Draw Command: To move from the current position to a relative position.
+        '''
+        DRIVE = 3
+        '''
+        ' Drive Command: To move each axis to a relative position.
+        '''
 #        DRIVEA = 4
+        '''
+        ' Draw Command: To move each axis to an absolute position.
+        '''
 
     class InterpolationMethods(enum.Enum):
         '''
@@ -92,14 +105,14 @@ class NGS_RC8_API():
         ' CP motion. TCP point moves from the current position to the target position linearly at constant speed
         ' in other than acceleration/deceleration areas.
         '''
-        C = 3       # Circular
+#        C = 3       # Circular
         '''
         ' Circular interpolation motion. The robot moves along the circular arc consisting of the current position,
         ' target position and relay position in order of the current position -> relay position -> target position.
         ' The robot moves at constant speed in other than acceleration/deceleration areas.
         ' Refer to https://densorobotics.com/content/user_manuals/19/000441.html
         '''
-        S = 4       # Free Curve Motion
+#        S = 4       # Free Curve Motion
         '''
         ' Free curve motion. The robot moves at constant speed along a smooth curve crossing the registered point.
         ' Refer to https://densorobotics.com/content/user_manuals/19/000442.html
@@ -127,13 +140,13 @@ class NGS_RC8_API():
         input_string = input_string.rstrip().lstrip()
         func = input_string.split(' ')[0].upper()
 
-        if NGS_RC8_API.RC8Functions[func] == NGS_RC8_API.RC8Functions.MOVE:
+        if NGS_RC8_API.RC8Commands[func] == NGS_RC8_API.RC8Commands.MOVE:
             return NGS_RC8_API.format_for_move(input_string)
-        elif NGS_RC8_API.RC8Functions[func] == NGS_RC8_API.RC8Functions.DRAW:
+        elif NGS_RC8_API.RC8Commands[func] == NGS_RC8_API.RC8Commands.DRAW:
             return NGS_RC8_API.format_for_draw(input_string)
-        elif NGS_RC8_API.RC8Functions[func] == NGS_RC8_API.RC8Functions.DRIVE:
+        elif NGS_RC8_API.RC8Commands[func] == NGS_RC8_API.RC8Commands.DRIVE:
             return NGS_RC8_API.format_for_drive(input_string)
-        elif NGS_RC8_API.RC8Functions[func] == NGS_RC8_API.RC8Functions.DRIVEA:
+        elif NGS_RC8_API.RC8Commands[func] == NGS_RC8_API.RC8Commands.DRIVEA:
             return NGS_RC8_API.format_for_driveA(input_string)
         else:
             print("function: ", func, " is not currently supported.")
@@ -150,8 +163,6 @@ class NGS_RC8_API():
 
         if(phrase[0].upper() == 'S'):
             phrase = "S" + str(int("".join(list(filter(str.isdigit, phrase)))))
-        else:
-            phrase = "".join(phrase.split(' '))
 
         return phrase
 
@@ -173,6 +184,8 @@ class NGS_RC8_API():
             elif character == ')':
                 open_bracket = False
                 phrase += character
+            elif character == ' ':
+                pass
             elif character == ',' and not open_bracket:
                 message_string += NGS_RC8_API.process_argument(phrase) + "|"
                 phrase = ""
@@ -189,8 +202,8 @@ class NGS_RC8_API():
             "P" : NGS_RC8_API.InterpolationMethods.PTP,
             "PTP" : NGS_RC8_API.InterpolationMethods.PTP,
             "L" : NGS_RC8_API.InterpolationMethods.L,
-            "C" : NGS_RC8_API.InterpolationMethods.C,
-            "S" : NGS_RC8_API.InterpolationMethods.S,
+#            "C" : NGS_RC8_API.InterpolationMethods.C,
+#            "S" : NGS_RC8_API.InterpolationMethods.S,
         }
 
         assert len(denso_interpolation_methods) - 1 == len(NGS_RC8_API.InterpolationMethods), "There is a descrepancy in the number of interpolation methods and the dictionary used to map these methods.  Dictionary's current state:\n\t" + str(denso_interpolation_methods)
@@ -223,7 +236,7 @@ class NGS_RC8_API():
     def list_implemented_pacscript_functions():
         print("\n- List of implemented pacscript functions and their matching enum -")
         index = 1
-        for implemented_function, enum_obj in NGS_RC8_API.RC8Functions.__members__.items():
+        for implemented_function, enum_obj in NGS_RC8_API.RC8Commands.__members__.items():
             print("Function enum: " + str(index) + ", Function Name: " + implemented_function.capitalize())
             index += 1
         print("")
@@ -246,7 +259,7 @@ class NGS_RC8_API():
         target_positions = NGS_RC8_API.retrieve_arguments(target_positions)
 
         #retrieve segments of draw call
-        return str(NGS_RC8_API.RC8Functions.MOVE.value) + ";" + str(interpolation)  + ";" +  str(target_positions)
+        return str(NGS_RC8_API.RC8Commands.MOVE.value) + ";" + str(interpolation)  + ";" +  str(target_positions)
 
     @staticmethod
     def format_for_draw(input_string):
@@ -266,7 +279,7 @@ class NGS_RC8_API():
         target_positions = NGS_RC8_API.retrieve_arguments(target_positions)
 
         #retrieve segments of draw call
-        return str(NGS_RC8_API.RC8Functions.DRAW.value) + ";" + str(interpolation)  + ";" +  str(target_positions)
+        return str(NGS_RC8_API.RC8Commands.DRAW.value) + ";" + str(interpolation)  + ";" +  str(target_positions)
 
     @staticmethod
     def format_for_drive(input_string):
@@ -275,10 +288,15 @@ class NGS_RC8_API():
         ' Author: Jacob Taylor Cassady
         '''
         # Cut string to get rid of function
-        input_string = input_string[6:]
+        input_string = input_string[6:].lstrip().rstrip()
+
+#        locations = input_string[1:].split("(")
+
+#        for index, location in enumerate(locations):
+#            print(index, location)
 
         #retrieve segments of draw call
-        return str(NGS_RC8_API.RC8Functions.DRIVE.value) + ";" + NGS_RC8_API.retrieve_arguments(input_string)
+        return str(NGS_RC8_API.RC8Commands.DRIVE.value) + ";" + NGS_RC8_API.retrieve_arguments(input_string)
 
     @staticmethod
     def format_for_driveA(input_string):
@@ -290,7 +308,7 @@ class NGS_RC8_API():
         input_string = input_string[7:]
 
         #retrieve segments of draw call
-        return str(NGS_RC8_API.RC8Functions.DRIVEA.value) + ";" + NGS_RC8_API.retrieve_arguments(input_string)
+        return str(NGS_RC8_API.RC8Commands.DRIVEA.value) + ";" + NGS_RC8_API.retrieve_arguments(input_string)
 
 if __name__ == "__main__":
     '''
@@ -299,6 +317,4 @@ if __name__ == "__main__":
     '''
     test_api = NGS_RC8_API()
 
-    test_api.call_function("Move P, P( 740, 0, 480, 180, 0, 180, -1 )")
-#    test_api.call_function("drive (1, J(10, 20, 30, 40, 50, 60, 70, 80))")
-#    test_api.call_function(" DRIVEA (1, J(10, 20, 30, 40, 50, 60, 70, 80))")
+    test_api.call_function("Move P, P( 740, 0, 480, 180, 0, 180, 5 )")

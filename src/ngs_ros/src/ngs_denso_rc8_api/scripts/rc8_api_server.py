@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # license removed for brevity
 '''
 '   !!!! ROS NODE !!!!
@@ -75,10 +75,10 @@ def run_api_server():
 
         server = API_Server(socket_connection)
         server.start_server()
+
     except (rospy.ROSInterruptException, KeyboardInterrupt):
         print("Shutting down server...")
         del server
-        pass
 
 if __name__ == '__main__':
     '''

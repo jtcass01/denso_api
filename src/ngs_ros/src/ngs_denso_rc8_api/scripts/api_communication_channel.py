@@ -16,9 +16,12 @@ def api_communication_channel():
     print("\tIssue commands 1 by 1 using PacScript conventions as described in the Denso Robotics RC8 Training Manuals")
 
     predefined_commands = {
-        "test_draw" : "Draw L, V(50, 10, 50 ), Speed = 180",
-        "test_move" : "Move P, P( 600, 50, 400, 180, 0, 180, -1)",
-        "list_functions" : "Prints a list of implemented functions on the ROS Server Node"
+        "test_draw" : "Draw L, V( 30, 10, 30 )",
+        "test_move" : "Move P, P( 600, 50, 400, 180, 0, 180, -1 )",
+        "move_1" : "Move P, P( -150.69, -605.59, 884.18, -178.59, -0.90, -18.70, 5 )",
+        "move_2" : "Move P, P( -284.69, -557.72, 867.11, -179, -0.47, 5.64, 5 )",
+        "test_drive" : "Drive (1,10), (7,70), (8, 18)",
+        "list_functions" : "list_functions"                                     # Prints a list of implemented functions on the ROS Server Node
     }
 
 

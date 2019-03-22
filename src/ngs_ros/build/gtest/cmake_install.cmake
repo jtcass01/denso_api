@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/ngs/jacob_ws/denso_api/src/ngs_ros/install")
+  set(CMAKE_INSTALL_PREFIX "/home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/ngs/jacob_ws/denso_api/src/ngs_ros/build/gtest/googlemock/cmake_install.cmake")
+  include("/home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/gtest/googlemock/cmake_install.cmake")
 
 endif()
 

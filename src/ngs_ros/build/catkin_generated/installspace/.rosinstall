@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/ngs/jacob_ws/denso_api/src/ngs_ros/install/setup.sh
+    local-name: /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/install/setup.sh

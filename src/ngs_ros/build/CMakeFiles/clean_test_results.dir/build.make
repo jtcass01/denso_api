@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ngs/jacob_ws/denso_api/src/ngs_ros/src
+CMAKE_SOURCE_DIR = /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ngs/jacob_ws/denso_api/src/ngs_ros/build
+CMAKE_BINARY_DIR = /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build
 
 # Utility rule file for clean_test_results.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/ngs/jacob_ws/denso_api/src/ngs_ros/build
 include CMakeFiles/clean_test_results.dir/progress.make
 
 CMakeFiles/clean_test_results:
-	/usr/bin/python2 /opt/ros/melodic/share/catkin/cmake/test/remove_test_results.py /home/ngs/jacob_ws/denso_api/src/ngs_ros/build/test_results
+	/usr/bin/python2 /opt/ros/melodic/share/catkin/cmake/test/remove_test_results.py /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/test_results
 
 clean_test_results: CMakeFiles/clean_test_results
 clean_test_results: CMakeFiles/clean_test_results.dir/build.make
@@ -71,6 +71,6 @@ CMakeFiles/clean_test_results.dir/clean:
 .PHONY : CMakeFiles/clean_test_results.dir/clean
 
 CMakeFiles/clean_test_results.dir/depend:
-	cd /home/ngs/jacob_ws/denso_api/src/ngs_ros/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ngs/jacob_ws/denso_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_api/src/ngs_ros/build/CMakeFiles/clean_test_results.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/CMakeFiles/clean_test_results.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/clean_test_results.dir/depend
 

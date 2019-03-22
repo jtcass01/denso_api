@@ -18,7 +18,7 @@ class NGS_RC8_API():
         self.implemented_functions = {
             "MOVE" : self.RC8Commands.MOVE,
             "DRAW" : self.RC8Commands.DRAW,
-            "DRIVE" : self.RC8Commands.DRIVE
+#            "DRIVE" : self.RC8Commands.DRIVE
 #            "DRIVEA" : self.RC8Commands.DRIVEA
         }
 
@@ -28,6 +28,7 @@ class NGS_RC8_API():
         # Create a SocketClient connection if the API requests it.  If not, enters echo mode.
         if socket_connection == True:
             self.socket_client = SocketClient()
+            self.socket_client.empty()
 
     def __del__(self):
         '''
@@ -80,7 +81,7 @@ class NGS_RC8_API():
         '''
         ' Draw Command: To move from the current position to a relative position.
         '''
-        DRIVE = 3
+#        DRIVE = 3
         '''
         ' Drive Command: To move each axis to a relative position.
         '''
@@ -310,11 +311,31 @@ class NGS_RC8_API():
         #retrieve segments of draw call
         return str(NGS_RC8_API.RC8Commands.DRIVEA.value) + ";" + NGS_RC8_API.retrieve_arguments(input_string)
 
+class Command(object):
+    def __init__(self, command = None, motion_interpolation = None, position_type = None, position_data = None, command_string = None):
+        assert (command is not None and motion_interpolation is not None and position_type is not None and position_data is not None) or command_string is not None, "Command data passed to initializer not consistent."
+
+        if command_string is None:
+            self.command = command
+            self.motion_interpolation = motion_interpolation
+            self.position_type = position_type
+            self.position_data = position_data
+        else: # Command string passed instead
+            # Write code to decode command string into parts. ? Maybe needed.
+            pass
+
+    def __str__(self):
+        return str(self.command) + " " + str(self.motion_interpolation) + ", " + str(self.position_type) + "(" + ", ".join(str(data) for data in self.position_data) + ")"
+
+
 if __name__ == "__main__":
     '''
     ' Test Script for api.  Will run when you call 'python NGS_RC8_API.py' from the command line.
     ' Author: Jacob Taylor Cassady
     '''
-    test_api = NGS_RC8_API()
+#    test_api = NGS_RC8_API()
 
-    test_api.call_function("Move P, P( 740, 0, 480, 180, 0, 180, 5 )")
+#    test_api.call_function("Move P, P( 740, 0, 480, 180, 0, 180, -1 )")
+
+    test_command = Command(command="Move", motion_interpolation="P", position_type="P", position_data = [41.63, -627.24, 734.41, -178.22, 0.95, -19.94, 5])
+    print(test_command)

@@ -1,4 +1,4 @@
-import socket
+import socket, select
 
 class SocketClient(object):
     '''
@@ -40,6 +40,17 @@ class SocketClient(object):
 
         print("Successfully created connection with server @ address {} through port {}".format(ip_address, port))
 
+    def empty(self):
+        """remove the data present on the socket"""
+        print("Flushing TCP Socket...")
+
+        input = [self.sock]
+        while 1:
+            inputready, o, e = select.select(input,[],[], 0.0)
+            if len(inputready)==0: break
+            for s in inputready: s.recv(1)
+
+        print("Socket flushed.")
 
     def loop_listen(self, expected_message_count = 10):
         '''

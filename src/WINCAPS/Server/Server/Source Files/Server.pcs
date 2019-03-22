@@ -120,12 +120,12 @@ Sub move_ptp( target As String )
 	Select Case target_type
 	Case "P"															' Position
 		target_position = target
-		PrintDbg "Move P, " & target
 		Move P, target_position
+		PrintDbg "Command sent to robot: Move P, " & target
 	Case "J"															' Joint
 		target_joint = target
-		PrintDbg "Move P, " & target
 		Move P, target_joint
+		PrintDbg "Command sent to robot: Move P, " & target
 	Case Else
 		PrintDbg "target type not recognized."
 	End Select
@@ -145,12 +145,12 @@ Sub move_linear( target As String )
 	Select Case target_type
 	Case "P"															' Position
 		target_position = target
-		PrintDbg "Move L, " & target
 		Move L, target_position
+		PrintDbg "Command sent to robot: Move L, " & target
 	Case "J"															' Joint
 		target_joint = target
-		PrintDbg "Move L, " & target
 		Move L, target_joint
+		PrintDbg "Command sent to robot: Move L, " & target
 	Case Else
 		PrintDbg "Target position datatype type not recognized."
 	End Select
@@ -196,8 +196,8 @@ Sub draw_ptp( target As String )
 	Select Case target_type
 	Case "V"															' Vector
 		target_vector = target
-		PrintDbg "Draw P, " & target_vector
 		Draw P, target_vector
+		PrintDbg "Command sent to robot: Draw P, " & target_vector
 	Case Else
 		PrintDbg "Target position datatype not recognized."
 	End Select
@@ -215,8 +215,8 @@ Sub draw_linear( target As String )
 	Select Case target_type
 	Case "V"															' Vector
 		target_vector = target
-		PrintDbg "Draw L, " & target_vector
 		Draw L, target_vector
+		PrintDbg "Command sent to robot: Draw L, " & target_vector
 	Case Else
 		PrintDbg "Target position datatype not recognized."
 	End Select

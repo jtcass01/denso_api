@@ -1,6 +1,6 @@
 set(_CATKIN_CURRENT_PACKAGE "ngs_denso_rc8_api")
-set(ngs_denso_rc8_api_VERSION "0.0.0")
-set(ngs_denso_rc8_api_MAINTAINER "ngs <ngs@todo.todo>")
+set(ngs_denso_rc8_api_VERSION "0.1.0")
+set(ngs_denso_rc8_api_MAINTAINER "Jacob Taylor Cassady <jtcass01@louisville.edu>")
 set(ngs_denso_rc8_api_PACKAGE_FORMAT "2")
 set(ngs_denso_rc8_api_BUILD_DEPENDS "roscpp" "rospy" "std_msgs")
 set(ngs_denso_rc8_api_BUILD_EXPORT_DEPENDS "roscpp" "rospy" "std_msgs")

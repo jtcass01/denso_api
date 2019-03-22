@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ngs/jacob_ws/denso_api/src/ngs_ros/src
+CMAKE_SOURCE_DIR = /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ngs/jacob_ws/denso_api/src/ngs_ros/build
+CMAKE_BINARY_DIR = /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build
 
 # Utility rule file for rosgraph_msgs_generate_messages_nodejs.
 
@@ -63,10 +63,10 @@ ngs_denso_rc8_api/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build: r
 .PHONY : ngs_denso_rc8_api/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
 
 ngs_denso_rc8_api/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean:
-	cd /home/ngs/jacob_ws/denso_api/src/ngs_ros/build/ngs_denso_rc8_api && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/cmake_clean.cmake
+	cd /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/ngs_denso_rc8_api && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/cmake_clean.cmake
 .PHONY : ngs_denso_rc8_api/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
 
 ngs_denso_rc8_api/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/depend:
-	cd /home/ngs/jacob_ws/denso_api/src/ngs_ros/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ngs/jacob_ws/denso_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_api/src/ngs_ros/src/ngs_denso_rc8_api /home/ngs/jacob_ws/denso_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_api/src/ngs_ros/build/ngs_denso_rc8_api /home/ngs/jacob_ws/denso_api/src/ngs_ros/build/ngs_denso_rc8_api/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src/ngs_denso_rc8_api /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/ngs_denso_rc8_api /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/ngs_denso_rc8_api/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : ngs_denso_rc8_api/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/depend
 

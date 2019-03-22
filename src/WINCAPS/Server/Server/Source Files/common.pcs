@@ -1,4 +1,4 @@
-'!TITLE "common.pcs"
+'!TITLE :  		"common.pcs"
 ' AUTHOR : 		Jacob Taylor Cassady
 ' DESCRIPTION : Main program.  Creates a task for a variety of pacscript processes.
 

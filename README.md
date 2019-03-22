@@ -11,6 +11,8 @@ Python API for Denso RC8 with a RC8-native server written in PacScript.  NGS is 
 ## 2 : Dependencies
 * [Robotic Operating System (melodic distribution)](http://wiki.ros.org/melodic)
 * [Python 3.4 enum module backported for use in Python 2.7](https://pypi.org/project/enum34/)
+* [pandas](https://pandas.pydata.org/)
+* [Ubuntu Linux Operating System](https://www.ubuntu.com/)
 
 ## 3 : Usage
 ### 3.1 : Starting the PacScript RC8 Server
@@ -32,7 +34,7 @@ Python API for Denso RC8 with a RC8-native server written in PacScript.  NGS is 
 
 * Run the following commands:
 ```bash
-	source /opt/ros/melodic/setup.bash
+	source /opt/ros/[YOUR_ROS_DISTRO]/setup.bash
 	catkin_make
 	source ./devel/setup.bash
 	roscore

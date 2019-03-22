@@ -1,8 +1,8 @@
-# Install script for directory: /home/ngs/jacob_ws/denso_api/src/ngs_ros/src/ngs_denso_rc8_api
+# Install script for directory: /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src/ngs_denso_rc8_api
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/ngs/jacob_ws/denso_api/src/ngs_ros/install")
+  set(CMAKE_INSTALL_PREFIX "/home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/ngs/jacob_ws/denso_api/src/ngs_ros/build/ngs_denso_rc8_api/catkin_generated/installspace/ngs_denso_rc8_api.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/ngs_denso_rc8_api/catkin_generated/installspace/ngs_denso_rc8_api.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ngs_denso_rc8_api/cmake" TYPE FILE FILES
-    "/home/ngs/jacob_ws/denso_api/src/ngs_ros/build/ngs_denso_rc8_api/catkin_generated/installspace/ngs_denso_rc8_apiConfig.cmake"
-    "/home/ngs/jacob_ws/denso_api/src/ngs_ros/build/ngs_denso_rc8_api/catkin_generated/installspace/ngs_denso_rc8_apiConfig-version.cmake"
+    "/home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/ngs_denso_rc8_api/catkin_generated/installspace/ngs_denso_rc8_apiConfig.cmake"
+    "/home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/ngs_denso_rc8_api/catkin_generated/installspace/ngs_denso_rc8_apiConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ngs_denso_rc8_api" TYPE FILE FILES "/home/ngs/jacob_ws/denso_api/src/ngs_ros/src/ngs_denso_rc8_api/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ngs_denso_rc8_api" TYPE FILE FILES "/home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src/ngs_denso_rc8_api/package.xml")
 endif()
 

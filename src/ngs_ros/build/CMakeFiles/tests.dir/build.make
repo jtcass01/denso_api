@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ngs/jacob_ws/denso_api/src/ngs_ros/src
+CMAKE_SOURCE_DIR = /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ngs/jacob_ws/denso_api/src/ngs_ros/build
+CMAKE_BINARY_DIR = /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build
 
 # Utility rule file for tests.
 
@@ -67,6 +67,6 @@ CMakeFiles/tests.dir/clean:
 .PHONY : CMakeFiles/tests.dir/clean
 
 CMakeFiles/tests.dir/depend:
-	cd /home/ngs/jacob_ws/denso_api/src/ngs_ros/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ngs/jacob_ws/denso_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_api/src/ngs_ros/build/CMakeFiles/tests.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/src /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build /home/ngs/jacob_ws/denso_rc8_api/src/ngs_ros/build/CMakeFiles/tests.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/tests.dir/depend
 

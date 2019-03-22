@@ -55,6 +55,7 @@ This server parses and forwards commands to the RC8 PacScript Server.
 ```
 
 #### 3.2.3 : (Optional) Starting a communication channel with the NGS RC8 API Node
+Creates a command-prompt style ROS node for communicating with the NGS RC8 API Server Node
 * Open a new commandline
 
 * Navigate to directory: denso_rc8_api/src/ngs_ros/
@@ -90,7 +91,7 @@ This server parses and forwards commands to the RC8 PacScript Server.
 ### 3.3 : API Functionality
 #### 3.3.1 : Implemented Commands
 ##### 3.3.1.1 : [Move Command](https://densorobotics.com/content/user_manuals/19/000207.html)
-To move the robot to the designated coordinates.
+Moves the robot to designated coordinates.
 ###### 3.3.1.1.1 : Supported DataTypes
 * [Position](https://densorobotics.com/content/user_manuals/19/000456.html)
 * [Joint](https://densorobotics.com/content/user_manuals/19/000457.html)
@@ -98,7 +99,7 @@ To move the robot to the designated coordinates.
 * [Point to Point](https://densorobotics.com/content/user_manuals/19/001615.html)
 * [Linear](https://densorobotics.com/content/user_manuals/19/001616.html)
 ###### 3.3.1.1.3 : Command Examples
-**Syntax:** Move motion interpolation,target position
+**Syntax:** Move motion_interpolation,target_position
 
 * Position Example
 ```PacScript
@@ -118,7 +119,7 @@ To move from the current position to a relative position.
 * [Point to Point](https://densorobotics.com/content/user_manuals/19/001615.html)
 * [Linear](https://densorobotics.com/content/user_manuals/19/001616.html)
 ###### 3.3.1.2.3 : Command Examples 
-**Syntax:** Move motion interpolation,target position
+**Syntax:** Draw motion_interpolation,position_vector
 * Example
 ```
 Draw L, V( 50, 10, 50 )

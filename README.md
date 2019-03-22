@@ -84,7 +84,7 @@ This server parses and forwards commands to the RC8 PacScript Server.
 * Run the following commands:
 ```bash
 	source ./devel/setup.bash
-	rosrun ngs_denso_rc8_api robot.py
+	rosrun ngs_denso_rc8_api controller.py
 ```
 
 ### 3.3 : API Functionality

@@ -8,11 +8,13 @@ Next Generation Systems Robotics Lab
 ## 1 : Description
 Python API for Denso RC8 with a RC8-native server written in PacScript.  NGS is interested in removing Labview from the control loop and interfacing with the RC8 directly to ensure well defined instruction sets.
 
-## 2 : Dependencies
+## 2 : 3rd Part Dependencies
+### 2.1 Operating System
+* [Ubuntu 18 Linux Operating System](https://www.ubuntu.com/)
+### 2.2 Frameworks
 * [Robotic Operating System (melodic distribution)](http://wiki.ros.org/melodic)
+### 2.3 Python Modules
 * [Python 3.4 enum module backported for use in Python 2.7](https://pypi.org/project/enum34/)
-* [pandas](https://pandas.pydata.org/)
-* [Ubuntu Linux Operating System](https://www.ubuntu.com/)
 
 ## 3 : Usage
 ### 3.1 : Starting the PacScript RC8 Server
@@ -24,7 +26,7 @@ Python API for Denso RC8 with a RC8-native server written in PacScript.  NGS is 
 
 * Turn the motor of the robot on.
 
-### 3.2 : Starting the ROS Server
+### 3.2 : Starting the ROS Server Components
 #### 3.2.1 : Initializing the environment
 * Open a new commandline
 
@@ -40,7 +42,8 @@ Python API for Denso RC8 with a RC8-native server written in PacScript.  NGS is 
 	roscore
 ```
 
-#### 3.2.2 : Starting the NGS RC8 API Node
+#### 3.2.2 : Starting the NGS RC8 API Server Node
+This server parses and forwards commands to the RC8 PacScript Server.
 * Open a new commandline
 
 * Navigate to directory: denso_rc8_api/src/ngs_ros/
@@ -60,6 +63,28 @@ Python API for Denso RC8 with a RC8-native server written in PacScript.  NGS is 
 ```bash
 	source ./devel/setup.bash
 	rosrun ngs_denso_rc8_api api_communication_channel.py
+```
+
+#### 3.2.4 : (Optional) Starting a robot state machine to interfaces with the NGS RC8 API Server Node
+* Open a new commandline
+
+* Navigate to directory: denso_rc8_api/src/ngs_ros/
+
+* Run the following commands:
+```bash
+	source ./devel/setup.bash
+	rosrun ngs_denso_rc8_api robot.py
+```
+
+#### 3.2.5 : (Optional) Starting a controller to send commands to a robot state machine.
+* Open a new commandline
+
+* Navigate to directory: denso_rc8_api/src/ngs_ros/
+
+* Run the following commands:
+```bash
+	source ./devel/setup.bash
+	rosrun ngs_denso_rc8_api robot.py
 ```
 
 ### 3.3 : API Functionality

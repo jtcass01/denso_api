@@ -15,6 +15,8 @@ Python API for Denso RC8 with a RC8-native server written in PacScript.  NGS is 
 * [Robotic Operating System (melodic distribution)](http://wiki.ros.org/melodic)
 ### 2.3 Python Modules
 * [Python 3.4 enum module backported for use in Python 2.7](https://pypi.org/project/enum34/)
+* [fake-useragent for emulating web browser](https://pypi.org/project/fake-useragent/)
+* [requests for communicating with Ethernet IP](http://docs.python-requests.org/en/master/)
 
 ## 3 : Usage
 ### 3.1 : Starting the PacScript RC8 Server
@@ -55,7 +57,6 @@ This server parses and forwards commands to the RC8 PacScript Server.
 ```
 
 #### 3.2.3 : (Optional) Starting a communication channel with the NGS RC8 API Node
-Creates a command-prompt style ROS node for communicating with the NGS RC8 API Server Node
 * Open a new commandline
 
 * Navigate to directory: denso_rc8_api/src/ngs_ros/
@@ -91,7 +92,7 @@ Creates a command-prompt style ROS node for communicating with the NGS RC8 API S
 ### 3.3 : API Functionality
 #### 3.3.1 : Implemented Commands
 ##### 3.3.1.1 : [Move Command](https://densorobotics.com/content/user_manuals/19/000207.html)
-Moves the robot to designated coordinates.
+To move the robot to the designated coordinates.
 ###### 3.3.1.1.1 : Supported DataTypes
 * [Position](https://densorobotics.com/content/user_manuals/19/000456.html)
 * [Joint](https://densorobotics.com/content/user_manuals/19/000457.html)
@@ -99,7 +100,7 @@ Moves the robot to designated coordinates.
 * [Point to Point](https://densorobotics.com/content/user_manuals/19/001615.html)
 * [Linear](https://densorobotics.com/content/user_manuals/19/001616.html)
 ###### 3.3.1.1.3 : Command Examples
-**Syntax:** Move motion_interpolation,target_position
+**Syntax:** Move motion interpolation,target position
 
 * Position Example
 ```PacScript
@@ -119,7 +120,7 @@ To move from the current position to a relative position.
 * [Point to Point](https://densorobotics.com/content/user_manuals/19/001615.html)
 * [Linear](https://densorobotics.com/content/user_manuals/19/001616.html)
 ###### 3.3.1.2.3 : Command Examples 
-**Syntax:** Draw motion_interpolation,position_vector
+**Syntax:** Move motion interpolation,target position
 * Example
 ```
 Draw L, V( 50, 10, 50 )

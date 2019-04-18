@@ -2,8 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\communication_clients"
+    "\\src\\ngs_ros",
+    "\\src\\ngs_ros\\src",
+    "\\src\\ngs_ros\\src\\ngs_denso_rc8_api",
+    "\\src\\ngs_ros\\src\\ngs_denso_rc8_api\\scripts"
   ],
-  "SelectedNode": "\\src\\communication_clients\\NGS_RC8.py",
+  "SelectedNode": "\\src\\ngs_ros\\src\\ngs_denso_rc8_api\\scripts\\ethernet_ip.py",
   "PreviewInSolutionExplorer": false
 }

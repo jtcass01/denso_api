@@ -1,0 +1,9 @@
+command_name,command,motion_interpolation,x,y,z,rx,ry,rz,figure,notes
+center,Move,P,41.63,-627.24,734.41,-178.22,0.95,-19.94,5,None
+over_0,Move,P,502.54,-0.01,783.23,179.3,0.03,42.9,5,None
+over_1,Move,P,358.43,-0.54,291.99,-176.84,4.48,46.47,5,None
+in_0,Move,P,358.39,-0.47,288.17,-176.93,4.32,46.48,5,None
+in_1,Move,P,357.96,0.54,286.32,-176.76,4.45,46.65,5,None
+in_2,Move,P,358.33,0.57,284.53,-176.87,4.34,46.65,5,None
+in_3,Move,P,358.71,0.73,279.97,-177.43,3.68,45.97,5,None
+at: medium_electric_gripper,Move,P,357.7,0.72,276.2,-176.87,4.24,45.96,5,None

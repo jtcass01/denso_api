@@ -1,6 +1,0 @@
-command_name,command,motion_interpolation,x,y,z,rx,ry,rz,figure,notes
-center,Move,P,41.63,-627.24,734.41,-178.22,0.95,-19.94,5,None
-over_0,Move,P,508.12,159.29,486.07,-178.28,-0.56,133.9,5,None
-over_1,Move,P,292,145.98,323.19,-178.28,-0.55,133.9,5,None
-in_0,Move,P,292,145.98,311.62,-178.28,-0.55,133.9,5,None
-at: electric-gripper-small,Move,P,292,145.98,304.78,-178.29,-0.55,133.92,5,None

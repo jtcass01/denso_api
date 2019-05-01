@@ -4,16 +4,18 @@ import rospy
 from std_msgs.msg import String
 from FileManager import FileManager
 from EthernetITV import EthernetITV
+from requests.exceptions import ConnectionError
 
 class Robot(object):
-    def __init__(self, starting_state, ethernet_ip_ip_address):
-        self.current_state = starting_state
+    def __init__(self, tool, ethernet_itv_ip_address, ethernet_itv_pressure_target):
+        self.tool = tool
         self.command_publisher =  None
         self.command_rate = None
-        self.ethernet_ip = EthernetITV(ip_address = ethernet_ip_ip_address)
+        self.ethernet_itv = EthernetITV(ip_address = ethernet_itv_ip_address, pressure_target = ethernet_itv_pressure_target)
 
     def __del__(self):
-        del self.current_state
+        del self.tool
+        del self.ethernet_itv
         if self.command_publisher is not None:
             del self.command_publisher
         if self.command_rate is not None:
@@ -31,138 +33,167 @@ class Robot(object):
         self.command_rate = rospy.Rate(0.2)
 
         # Creates a subscriber attached to the message alias 'robot_state'
-        rospy.Subscriber('robot_state', String, self.change_states)
+        rospy.Subscriber('robot_state', String, self.recieve_command)
 
-        print("Robot initialized with the starting state " + str(self.current_state) + ".  Waiting for command sets...")
+        print("Robot initialized with the tool " + str(self.tool.name) + ".  Waiting for command sets...")
 
         rospy.spin()
 
-    def change_states(self, subscriber_data):
-        command = subscriber_data.data
+    def recieve_command(self, command_data):
+        command = command_data.data
 
-        # Determine if command is for ethernet_ip, or robot
-        if(Robot.TOOL_CHANGER_STATES.confirm_state(command)): # If command was meant for Tool Changer
-            desired_state = Robot.TOOL_CHANGER_STATES(Robot.TOOL_CHANGER_STATES.test_state(command))
-            rospy.loginfo("Robot recieved command to move to " + str(desired_state))
+        if FileManager.is_valid_tool_path(command) or command == "None":
+            if command == self.tool or (self.tool is None and command == "None"):
+                rospy.loginfo("Command recieved for robot to use tool: " + command + ", but tool changer already thinks it is using that tool.")
+                return
 
-            if self.is_valid_state(self.current_state, desired_state):
-                if desired_state == Robot.TOOL_CHANGER_STATES.WAITING:
-                    self.come_from(self.current_state)
-                    self.current_state = Robot.TOOL_CHANGER_STATES.WAITING
-                elif self.current_state == Robot.TOOL_CHANGER_STATES.WAITING:
-                    self.goto(desired_state)
-                    self.current_state = desired_state
+            if command == "None":                                  # Return the current tool
+                self.goto(self.tool.name)                          # Goto tool location
+                self.deactivate_itv()                              # Drop the current tool.
+                self.come_from(self.tool.name)                     # Return from current tool
+                self.tool.pneumatic_status = False                 # Update tool attributes
+                self.tool.name = None
             else:
-                if self.is_valid_state(self.current_state, Robot.TOOL_CHANGER_STATES.WAITING) and self.is_valid_state(Robot.TOOL_CHANGER_STATES.WAITING, desired_state):
-                    self.come_from(self.current_state)
-                    self.current_state = Robot.TOOL_CHANGER_STATES.WAITING
-                    self.goto(desired_state)
-                    self.current_state = desired_state
-                else:
-                    rospy.loginfo("Robot deemed this was not a valid move. \n\tcurrent_state: " + str(self.current_state) + "\n\tdesired_state: " + str(response))
-
-        elif(EthernetITV.STATES.confirm_state(command)): # If command was meant for EthernetITV
-            desired_state = EthernetITV.STATES(EthernetITV.STATES.test_state(command))
-            rospy.loginfo("Robot recieved command to update EthernetITV to: " + str(desired_state))
-
-            if EthernetITV.STATES.Pressure_ON == desired_state:
-                self.ethernet_ip.turn_on()
-            elif EthernetITV.STATES.Pressure_OFF == desired_state:
-                self.ethernet_ip.turn_off()
-
-            rospy.loginfo("EthernetITV state updated to: " + str(desired_state))
+                self.grab_tool(command)
         else:
-            rospy.loginfo("Unable to resolve command " + str(command) + ". Invalid robot and/or EthernetITV state.")
+            rospy.loginfo("Unable to resolve robot command " + str(command) + ".")
 
+    def grab_tool(self, new_tool_name):
+        if self.tool.name is None:                         # Not currently holding a tool, go get one.
+            self.goto(new_tool_name)                       # Go to new tool.
+            self.activate_itv()                            # Activate pressure to grip tool
+            self.come_from(new_tool_name)                  # Return to center with new tool.
+            self.tool.name = new_tool_name                 # Update tool attributes to match new tool.
+            if "pneumatic" in new_tool_name:
+                self.tool.pneumatic_status = True
+            else:
+                self.tool.pneumatic_status = False
+        else:
+            old_tool = self.tool.name
+            self.goto(old_tool)                            # Return the current tool where it needs to go.
+            self.deactivate_itv()                          # Drop the current tool.
+            self.come_from(old_tool)                       # Return from the old tools location.
+            self.tool.name = None                          # Update tool attributes to match lack of tool
+            self.tool.pneumatic_status = False
+            self.goto(new_tool_name)                       # Go to new tool.
+            self.activate_itv()                            # Activate pressure to grip tool
+            self.come_from(new_tool_name)                  # Return to center with new tool.
+            self.tool.name = new_tool_name                 # Update tool attributes to match new tool.
+            if "pneumatic" in new_tool_name:
+                self.tool.pneumatic_status = True
+            else:
+                self.tool.pneumatic_status = False
 
-    def goto(self, state):
-        rospy.loginfo("BEGIN goto " + state.value)
+    def goto(self, tool_name):
+        rospy.loginfo("BEGIN goto " + str(tool_name))
 
-        command_set = FileManager.load_command_set(state.value)
+        path = FileManager.load_path(tool_name)
 
-        rospy.loginfo("command_set loaded: " + " ".join("\n" + str(command_index) + ": " + str(command) for command_index, command in enumerate(command_set)))
+        rospy.loginfo("Path loaded: " + " ".join("\n" + str(command_index) + ": " + str(command) for command_index, command in enumerate(path)))
 
-        for command in command_set:
+        for command in path:
             rospy.loginfo("Command issued: " + str(command))
             self.command_publisher.publish(str(command))
             self.command_rate.sleep()
 
-        rospy.loginfo("END goto " + state.value)
+        rospy.loginfo("END goto " + tool_name)
 
-    def come_from(self, state):
-        rospy.loginfo("BEGIN come_from " + state.value)
+    def come_from(self, tool_name):
+        rospy.loginfo("BEGIN come_from " + tool_name)
 
-        if isinstance(self.current_state, Robot.TOOL_CHANGER_STATES):
-            command_set = FileManager.load_command_set(self.current_state.value)[::-1]
-        else:
-            command_set = FileManager.load_command_set(self.current_state)[::-1]
+        path = FileManager.load_path(tool_name)[::-1]
 
-        rospy.loginfo("command_set loaded: " + " ".join("\n" + str(command_index) + ": " + str(command) for command_index, command in enumerate(command_set)))
+        rospy.loginfo("Path loaded: " + " ".join("\n" + str(command_index) + ": " + str(command) for command_index, command in enumerate(path)))
 
-        for command in command_set:
+        for command in path:
             rospy.loginfo("Command issued: " + str(command))
             self.command_publisher.publish(str(command))
             self.command_rate.sleep()
 
-        rospy.loginfo("END come_from " + state.value)
+        rospy.loginfo("END come_from " + tool_name)
+
+    def activate_itv(self):
+        try:
+            self.ethernet_itv.turn_on()                    # Activate pressure to grip tool
+            rospy.loginfo("Ethernet ITV's pressure set to pressure target")
+        except ConnectionError:
+            rospy.loginfo("Error connecting to ethernet_itv during activation.")
+        rospy.sleep(2.)
+
+    def deactivate_itv(self):
+        try:
+            self.ethernet_itv.turn_off()                       # Drop the current tool
+            rospy.loginfo("Ethernet ITV's pressure set to 0")
+        except ConnectionError:
+            rospy.loginfo("Error connecting to ethernet_itv during deactivation.")
+        rospy.sleep(2.)
 
     @staticmethod
-    def is_valid_state(current_state, desired_state):
-        if current_state == Robot.TOOL_CHANGER_STATES.WAITING or desired_state == Robot.TOOL_CHANGER_STATES.WAITING or current_state == desired_state:
-            return True
-        else:
-            return False
+    def get_ethernet_itv_info():
+        ip_address = Robot.get_ethernet_itv_ip_address()
+        pressure_target = Robot.get_ethernet_itv_pressure_target()
 
-    class TOOL_CHANGER_STATES(enum.Enum):
-        SMALL_ELECTRIC_GRIPPER = 'small_electric_gripper'
-        MEDIUM_ELECTRIC_GRIPPER = 'medium_electric_gripper'
-        LARGE_ELECTRIC_GRIPPER = 'large_electric_gripper'
-        WAITING = 'waiting'
+        return ip_address, pressure_target
 
-        @staticmethod
-        def test_state(suggested_state):
-            switcher = {
-                Robot.TOOL_CHANGER_STATES.SMALL_ELECTRIC_GRIPPER.value : 'small_electric_gripper',
-                Robot.TOOL_CHANGER_STATES.MEDIUM_ELECTRIC_GRIPPER.value : 'medium_electric_gripper',
-                Robot.TOOL_CHANGER_STATES.LARGE_ELECTRIC_GRIPPER.value : 'large_electric_gripper',
-                Robot.TOOL_CHANGER_STATES.WAITING.value : 'waiting'
-            }
+    @staticmethod
+    def get_ethernet_itv_pressure_target():
+        pressure_target = int(raw_input("Pressure target for the Ethernet ITV: "))
+        return pressure_target
 
-            return switcher.get(suggested_state, "invalid_robot_state")
+    @staticmethod
+    def get_ethernet_itv_ip_address():
+        ip_address = raw_input("\nWhat is ip address of the robot's ethernet ITV [default = 192.168.1.20]: ")
 
-        @staticmethod
-        def confirm_state(suggested_state):
-            suggested_state = Robot.TOOL_CHANGER_STATES.test_state(suggested_state)
+        if ip_address == "":
+            ip_address = "192.168.1.20"
 
-            if suggested_state != "invalid_robot_state":
-                return True
-            else:
-                return False
+        return ip_address
 
-        @staticmethod
-        def get_starting_state():
-            user_state_response = raw_input("\nWhat is the current state of the robot: ")
+    @staticmethod
+    def perform_tool_check():
+        tool_check = ""
+        tool = Robot.Tool(None, False)
 
-            if(Robot.TOOL_CHANGER_STATES.confirm_state(user_state_response)): # If command was meant for Tool Changer
-                desired_state = Robot.TOOL_CHANGER_STATES.test_state(user_state_response)
-                starting_state = Robot.TOOL_CHANGER_STATES(desired_state)
-            else:
-                starting_state = Robot.TOOL_CHANGER_STATES.WAITING
+        while tool_check != "y" and tool_check != "n":
+            tool_check = raw_input("\nIs the robot currently gripping a tool (y/n): ")
 
-            return starting_state
+            if tool_check == "y":
+                FileManager.list_tool_paths()
+                tool_name = raw_input("\nWhich of the above listed tool paths does the tool match (if none, please cancel program and update tool_paths directory for your tool):")
 
-def get_ethernet_itv_ip_address():
-    ip_address = raw_input("\nWhat is ip address of the robot's ethernet ITV [default = 192.168.1.20]: ")
+                if FileManager.is_valid_tool_path(tool_name):
+                    tool.name = tool_name
+                    if "pneumatic" in tool_name:
+                        tool.pneumatic_status = True
+                else:
+                    print("The above tool does not match any paths found in the tool_paths directory.  Please cancel the program, update the directory and try again.")
 
-    if ip_address == "":
-        ip_address = "192.168.1.20"
+            elif tool_check == "n":
+                tool.pneumatic_status = False
 
-    return ip_address
+        return tool
+
+    @staticmethod
+    def get_initial_info():
+        tool = Robot.perform_tool_check()
+        ethernet_itv_ip_address, ethernet_itv_pressure_target = Robot.get_ethernet_itv_info()
+
+        return tool, ethernet_itv_ip_address, ethernet_itv_pressure_target
+
+    class Tool(object):
+        def __init__(self, name, pneumatic_status):
+            self.name = name
+            self.pneumatic_status = pneumatic_status
+
+        def __del__(self):
+            if self.name is not None:
+                del self.name
+            del self.pneumatic_status
+            del self
 
 if __name__ == "__main__":
-    starting_state = Robot.TOOL_CHANGER_STATES.get_starting_state()
-    ethernet_itv_ip_address = get_ethernet_itv_ip_address()
-    robot = Robot(starting_state = starting_state, ethernet_ip_ip_address = ethernet_itv_ip_address)
+    tool, ethernet_itv_ip_address, ethernet_itv_pressure_target = Robot.get_initial_info()
+    robot = Robot(tool, ethernet_itv_ip_address, ethernet_itv_pressure_target)
 
     try:
         robot.init_node()

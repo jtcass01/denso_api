@@ -1,0 +1,6 @@
+command_name,command,motion_interpolation,x,y,z,rx,ry,rz,figure,notes
+center,Move,P,41.63,-627.24,734.41,-178.22,0.95,-19.94,5,None
+far_above,Move,P,292.25,-151.44,862.34,-175.81,0.17,43.57,5,None
+above,Move,P,292.25,-151.44,421.89,-175.81,0.17,43.57,5,None
+floating,Move,P,292.25,-151.44,314.64,-175.81,0.17,43.57,5,None
+at: small_pneumatic_gripper,Move,P,292.25,-151.44,307.76,-175.81,0.17,43.57,5,None

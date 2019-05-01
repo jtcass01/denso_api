@@ -3,11 +3,11 @@ import requests
 import enum
 
 class EthernetITV(object):
-    def __init__(self, ip_address="192.168.1.20", user_name='user', password='user'):
+    def __init__(self, ip_address="192.168.1.20", pressure_target = 60, user_name='user', password='user'):
         self.ip_address = ip_address
         self.user_name = user_name
         self.password = password
-        self.pressure_target = int(raw_input("Pressure target for the Ethernet ITV: "))
+        self.pressure_target = pressure_target
         self.user_agent = UserAgent()
 
     def __del__(self):
@@ -50,8 +50,8 @@ class EthernetITV(object):
 
             param_url = param_url + "?sp=" + str(pressure) + "&pu=p&orplc=on&submit=Submit"
             pressure_change_attempt = session.get(param_url, headers=header)
-            print("== Pressure Change Attempt ==")
-            print(pressure_change_attempt.text)
+#            print("== Pressure Change Attempt ==")
+#            print(pressure_change_attempt.text)
 
     def turn_on(self):
         print("EthernetITV turned on.")
